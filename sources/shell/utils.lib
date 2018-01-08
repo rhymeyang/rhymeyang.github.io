@@ -19,3 +19,9 @@ function msg_error() {
 function msg_li() {
     printf "$(tput setaf 3)* %s$(tput sgr0)\n" "$@"
 }
+
+function msg_info() {
+    printf "$(tput setaf 45)+ %s$(tput sgr0)\n" "$@"
+}
+
+

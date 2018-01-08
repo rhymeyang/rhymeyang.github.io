@@ -5,15 +5,39 @@ source "./deploy.conf"
 
 declare -r GEM_HOME="${PWD}/_vender/bundle"
 
-declare -r siteHome="$(dirname $PWD)/${localSiteDir}"
 declare -r workDir=${PWD}
+declare -r siteDir="${workDir}/_site"
 
-function _clean_site_dir(){
-    cd ${siteHome}
+function __rm_site_dir(){
+    cd ${workDir}
+
+    if [ -d ${siteDir} ]; then
+        rm -rf '${siteDir}'
+    fi
+    git worktree prune
+}
+
+function __add_site_dir(){
+    cd ${workDir}
+
+    if [ -d ${siteDir} ]; then
+        msg_error "${siteDir} exist, should not add again"
+        return
+    fi
+
+    git worktree add  ${siteDir} ${branchSite}
+
+    cd ${siteDir}
+    git pull origin ${branchSite}
+}
+
+function __clean_site_dir(){
+    cd ${siteDir}
     keepArray=( "\.git" "\.gitignore" "README.md"  '\.'  '\..')
     allFiles=$(ls -a)
     
-    msg_header "origin files ${allFiles}"
+    msg_info "will remove file under ${siteDir}"
+    msg_info "origin files ${allFiles}"
     for checkFile in ${keepArray[@]}
     do
         allFiles=$(echo ${allFiles}| 
@@ -26,7 +50,7 @@ function _clean_site_dir(){
 
     allFileArray=($(echo ${allFiles}))
     
-    msg_header "will remove "
+    msg_info "will remove "
     msg_warning "${allFileArray[@]}"
     
 
@@ -34,41 +58,38 @@ function _clean_site_dir(){
     do
         rm -rf ${actualFile}
     done
+    msg_info "after remove, path ${PWD}"
+
+    msg_info "$(ls -a)"
 }
-function _check_site(){    
-    if [ ! -d ${siteHome} ]; then
-        msg_warning "will clone ${remoteURL} to ${siteHome}"
-        
-        cd "$(dirname $PWD)"
-        echo $PWD
-        git clone -b ${branchSite} ${remoteURL} ${localSiteDir}
-        
-    else
-        msg_warning "will clean ${siteHome}"
-        cd ${siteHome}
-        git clean -f
-        git checkout ${branchSite}
-        git pull origin ${branchSite}
-    fi
+
+function _refresh_site_dir(){
+    __rm_site_dir
+    __add_site_dir
+    __clean_site_dir
 }
 
 function _deploy_site(){
-  cd ${workDir}
   
   if [[ $isCompile == "yes" ]]; then
+    cd ${workDir}
+    _refresh_site_dir
+
     msg_warning "will build site, wait ..."
+
+    cd ${workDir}
     bundle exec jekyll b
   fi
 
-  _check_site
-  _clean_site_dir
-  cd ${workDir}
-  echo "current $PWD"
-  mv -f "${workDir}/_site/"  "${siteHome}/"
+  cd ${siteDir}
+  git add -A .
+  git diff
+  git  commit -m "$commit - $(date)"
+  git push origin -u ${branchSite}
+  msg_finish "Done!"
 }
 
-echo '--'
-_deploy_site
+
 
 # Menu
 case $1 in
@@ -95,7 +116,7 @@ case $1 in
         ;;
     build:clean )
         msg_header "Will clean last build. Wait ..."
-        rm -rf "_site"
+        _refresh_site_dir
         rm -rf ".sass-cache"
         bundle exec jekyll b
         bundle exec jekyll s
@@ -104,7 +125,7 @@ case $1 in
     reset)
         msg_header "Reset all the pure settings. Wait ..."
         rm -rf "Gemfile.lock"
-        rm -rf "_site"
+        _refresh_site_dir
         rm -rf ".sass-cache"
         msg_finish "Done!"
         ;;

@@ -1,0 +1,34 @@
+# ________________________________________________________________________________________________ #
+# Attention! Change only the values of the variables! Do not change the position of the variables. #
+# ________________________________________________________________________________________________-#
+
+# Category: Website.
+website:
+
+  under_maintenance:
+    enable: false
+    title: |
+     <p> Sorry :( </p>
+      The domain of my site is under maintenance.
+    subtitle: |
+      <p> It will not have forecast of return. Meanwhile, follow me on the social networks below. </p>
+
+  title: "Vicky's Blog"  
+  launch: 2018
+  avatar: blog.svg
+  
+  author:
+    image: blog.svg
+  strings:
+    sidebar:
+      title: |
+        Vicky
+      links:
+        home: Home
+    footer:
+      message: Simplicity is fashionable.
+
+
+
+
+

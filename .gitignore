@@ -1,3 +1,5 @@
 _site
+_vender
+test
 .sass-cache
 .jekyll-metadata

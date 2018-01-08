@@ -1,4 +1,5 @@
 source "https://rubygems.org"
+ruby RUBY_VERSION
 
 # Hello! This is where you manage which Jekyll version is used to run.
 # When you want to use a different version, change it below, save the
@@ -7,11 +8,12 @@ source "https://rubygems.org"
 #     bundle exec jekyll serve
 #
 # This will help ensure the proper Jekyll version is running.
-# Happy Jekylling!
-gem "jekyll", "~> 3.7.0"
-
-# This is the default theme for new Jekyll sites. You may change this to anything you like.
-gem "minima", "~> 2.0"
+gem 'json', '~> 2.1.0'
+gem 'pygments.rb', '~> 1.2.0'
+gem 'bigdecimal','~>1.3.3'
+gem 'rake', '~> 12.2.1'
+# gem 'jekyll', '~> 3.4.5'
+gem 'jekyll', '~> 3.7.0'
 
 # If you want to use GitHub Pages, remove the "gem "jekyll"" above and
 # uncomment the line below. To upgrade, run `bundle update github-pages`.
@@ -19,7 +21,12 @@ gem "minima", "~> 2.0"
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do
+  gem 'jekyll-coffeescript', '~> 1.0.2'
+  gem 'jekyll-tagging', '~> 1.1.0'
   gem "jekyll-feed", "~> 0.6"
+  gem 'jemoji', '~> 0.8.1'
+  # gem 'jekyll-spotify-plugin', '~> 2.3.6'
+  gem 'sass', '=3.4.25'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

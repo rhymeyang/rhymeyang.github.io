@@ -13,29 +13,77 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
-title: Your awesome title
-email: your-email@example.com
+
+
 description: >- # this means to ignore newlines until "baseurl:"
   Write an awesome description for your new site here. You can edit this
   line in _config.yml. It will appear in your document head meta (for
   Google search results) and in your feed.xml site description.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+baseurl: "/test" 
+url: "https://rhymeyang.github.io"
+github_username:  rhymeyang
 
+
+# Settings for the plugins in the _plugins folder.
+plugins_dir:
+  imager:
+    dir_posts: assets/img/posts
+  # To see language support, go to the plugin "_plugins/reading_time.rb"
+  reading_time:
+    locale: en_US
+  # To see language support, go to the plugin "_plugins/datelang.rb"
+  datelang:
+    locale: en_US
+    reload: true
+
+# Build local / Server
+destination: _site
+port: 9000
+host: localhost
+
+# [ Vendor Off ]
+# Using: true | false
+vendor-off: true
+
+include: ['_pages','_tec', '_home']
 # Build settings
 markdown: kramdown
-theme: minima
-plugins:
+# theme: typing
+plugins_dir:
   - jekyll-feed
+
+
+# Config SASS
+sass:
+  sass_dir: _sass
+  # style: compressed
+
+# Add Avatar in: Sidebar or page Hello, and configure.
+avatar:
+  sidebar: true
+  hello: false
+  size:
+    enable: true
+    value: 165
+  border:
+    enable: false
+    radius: 50
+    value: 1
+
+# Enable or disable icons on every website. Use:  true | false
+screen:
+  icons:
+    enable: true
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - run.sh
+  - sources/
 #   - node_modules
 #   - vendor/bundle/
 #   - vendor/cache/

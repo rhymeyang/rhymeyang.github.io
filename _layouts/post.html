@@ -13,7 +13,12 @@ layout: default
     <h1>{{ page.title }}</h1>
   </div>
   <div class="row meta" datetime="{{ page.date | date:'%Y-%m-%d' }}">
-    
+    <time class="col-sm-6 datetime">
+      {% if site.screen.icons.enable == true %}
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+      {% endif %}
+      <span class="text {% if site.screen.icons.enable == true %} tmargin {% endif %}">{{ page.date | date: '%B %d, %Y' }}</span>
+    </time>
   </div>
   <div class="row tag-list">
     {% if site.screen.icons.enable == true %}<i class="fa fa-tags" aria-hidden="true"></i>{% else %}Tags: {% endif %}
@@ -38,7 +43,7 @@ layout: default
     </div>
     <div class="row author">
       <div class="col-sm-2 image">
-        <img class="img-responsive center-block" src="{{ '/assets/images/author' | prepend: site.baseurl | prepend: site.url }}/{{ dbase.website.author.image }}" alt="">
+        <img class="img-responsive center-block" src="{{ '/assets/img/author' | prepend: site.baseurl | prepend: site.url }}/{{ dbase.website.author.image }}" alt="">
       </div>
       <div class="col-sm-10 bio">
         <p class="title">{{ dbase.website.strings.post.author.title }}</p>
@@ -46,20 +51,7 @@ layout: default
         <p class="content">{{ dbase.website.strings.post.author.bio }}</p>
       </div>
     </div>
-    <div class="disqus" id="comments">
-    {% if page.comments and dbase.userdata.disqus.username %}
-      <div class="title">
-        <h3><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;{{ dbase.website.strings.comments.title }}</h3>
-      </div>
-      <div class="content">
-        {% include scripts/disqus_comments.html %}
-      </div>
-    {% else %}
-      <div class="title">
-        <h3><i class="fa fa-comments" aria-hidden="true"></i>&nbsp;{{ dbase.website.strings.comments.disable }}</h3>
-      </div>
-    {% endif %}
-    </div>
+
 
   </div>
 </article>

@@ -17,8 +17,7 @@ layout: default
           <div class="meta-list">
             <div class="col-sm-6 datetime">
               <span>
-                {% datelang post %}
-                {% include datelang/post %}
+                {{ post.date | date: '%B %d, %Y' }}
               </span>
             </div>
             <div class="col-sm-6 tags-this">

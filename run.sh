@@ -8,7 +8,7 @@ declare -r GEM_HOME="${PWD}/_vender/bundle"
 declare -r workDir=${PWD}
 declare -r siteDir="${workDir}/_site"
 
-function __rm_site_dir(){
+function _rm_site_dir(){
     cd ${workDir}
 
     if [ -d ${siteDir} ]; then
@@ -64,7 +64,7 @@ function __clean_site_dir(){
 }
 
 function _refresh_site_dir(){
-    __rm_site_dir
+    _rm_site_dir
     __add_site_dir
     __clean_site_dir
 }
@@ -116,10 +116,18 @@ case $1 in
         ;;
     build:clean )
         msg_header "Will clean last build. Wait ..."
-        _refresh_site_dir
+        _rm_site_dir
         rm -rf ".sass-cache"
         bundle exec jekyll b
         bundle exec jekyll s
+        msg_finish "Done!"
+        ;;
+    build:watch )
+        msg_header "Will clean last build. Wait ..."
+        _rm_site_dir
+        rm -rf ".sass-cache"
+        bundle exec jekyll b --watch
+        bundle exec jekyll s 
         msg_finish "Done!"
         ;;
     reset)

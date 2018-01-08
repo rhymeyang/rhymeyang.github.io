@@ -1,18 +1,42 @@
-{% for hello in site.categories.hello %}
-  <div class="hello">
-    <div class="row title">
-      <h1>{{ hello.title }}<span class="cursor">|</span></h1>
-    </div>
-    <div class="row content ">
-      {% if site.avatar.hello == true %}
-        <img {% if site.avatar.border.enable == true %} 
+<!-- Include Data Base  -->
+{% include dbase/dbase %}
 
-        style="border: {{site.avatar.border.value}}px solid #333; border-radius: {{site.avatar.border.radius}}%;" 
-      {% endif %} 
-      class="pull-left avatar" src="{{ "/assets/img/avatar"  | prepend: site.baseurl | prepend: site.url }}/{{ dbase.website.avatar }}" 
-      {%if site.avatar.size.enable == true %} height="{{ site.avatar.size.value }}" width="{{ site.avatar.size.value }}" {% endif %} alt="{{ dbase.website.title }}">
-      {% endif %}
-      {{ hello.content }}
+{% for post in site.categories.blog %}
+  {% capture post_count %} {{ post_count | plus: 1 }} {% endcapture %}
+{% endfor %}
+
+
+<div class="postlist" itemscope="itemscope" itemtype="http://schema.org/Blog">
+  <div class="row title-description">
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.msg_qtd[0] }} <strong>{{ post_count }}</strong> {{ page.msg_qtd[1] }} {{ content }} </p>
+  </div>
+  {% if page.buttons == true %}
+  <div class="row meta">
+    <div class="col-sm-6">
+      <a href="{{ site.url }}{{ site.baseurl }}/blog/tags/">Tags Cloud</a>
+    </div>
+    <div class="col-sm-6">
+      <a href="{{ site.url }}{{ site.baseurl }}/blog/search/">Search</a>
     </div>
   </div>
-{% endfor %}
+  {% endif %}
+  <div class="row content">
+    {% for post in site.categories.blog %}
+    <div class="wrap">
+      <div class="time-and-count-comments" datetime="{{ post.date | date:'%Y-%m-%d' }}">        
+       <time class="time">
+          {{ post.date | date: '%B %d, %Y' }}
+        </time>
+      </div>
+      <div class="url">
+        <h1>
+          <a href="{{ site.url }}{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+        </h1>
+        {% if post.excerpted %}<p class="excerpted">{{ post.excerpted | strip_html | truncatewords:26 }}<a href="{{ site.url }}{{ site.baseurl }}{{ post.url }}" class="continue">{{ dbase.website.strings.postlist.continue }}</a></p>{% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+

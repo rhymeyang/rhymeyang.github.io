@@ -22,6 +22,7 @@ gem 'jekyll', '~> 3.7.0'
 # If you have any plugins, put them here!
 group :jekyll_plugins do
   gem 'jekyll-coffeescript', '~> 1.0.2'
+  gem 'jekyll-paginate', '~> 1.1.0'
   gem 'jekyll-tagging', '~> 1.1.0'
   gem "jekyll-feed", "~> 0.6"
   gem 'jemoji', '~> 0.8.1'

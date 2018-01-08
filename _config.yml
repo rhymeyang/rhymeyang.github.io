@@ -30,11 +30,7 @@ plugins_dir:
     dir_posts: assets/img/posts
   # To see language support, go to the plugin "_plugins/reading_time.rb"
   reading_time:
-    locale: en_US
-  # To see language support, go to the plugin "_plugins/datelang.rb"
-  datelang:
-    locale: en_US
-    reload: true
+    locale: ch_CH
 
 # Build local / Server
 destination: _site
@@ -45,12 +41,20 @@ host: localhost
 # Using: true | false
 vendor-off: true
 
-include: ['_pages','_tec', '_home']
+include: ['_pages','_blog', '_home']
 # Build settings
 markdown: kramdown
-# theme: typing
+permalink: /blog/:title/
+# permalink: pretty
+
+
 plugins_dir:
   - jekyll-feed
+
+collections:
+  blog:
+    output: true
+    permalink: /blog/:path/
 
 
 # Config SASS
@@ -74,6 +78,13 @@ avatar:
 screen:
   icons:
     enable: true
+
+
+# Config plugin 'jekyll-tagging'
+tag_page_layout: tag_page
+tag_page_dir: blog/tags
+tag_permalink_style: pretty
+
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

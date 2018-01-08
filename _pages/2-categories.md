@@ -1,6 +1,6 @@
 ---
 layout: postlist
-title: Blog
+title: 分类
 
 # Enable / Disable events Google Analytics for this link page.
 ga_event: false
@@ -19,7 +19,6 @@ menu: true
 
 published: true
 
-permalink: /blog/
+permalink: /blog/categories/
 ---
 
-What follows is a list of weblog posts from as early as {{ site.debutyear }}. I hope you enjoy

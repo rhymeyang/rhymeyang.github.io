@@ -20,7 +20,7 @@ published: true
 # Does not change and does not remove 'script' variables
 script: [projects.js]
 
-permalink: /projects/
+permalink: /blog/projects/
 ---
 
 If you wanted to know about my favorite chores, this is the correct page. You find my designs of my own, or participation.

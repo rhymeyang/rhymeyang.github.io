@@ -572,41 +572,46 @@ html, body {
       .sidebar .header h2 a {
         text-decoration: none;
         color: #000000; }
-  .sidebar .menu ul {
-    padding-left: 10px; }
-    @media (max-width: 500px) {
-      .sidebar .menu ul {
-        text-align: center;
-        width: 370px;
-        margin: 0 auto; } }
-    .sidebar .menu ul li {
-      list-style: none; }
+  .sidebar .menu {
+    /*
+    .li-fa-search,.li-fa-tags{
+      @media (min-width: 768px) {
+        padding-left: 15px;
+      }
+    }
+    */ }
+    .sidebar .menu ul {
+      padding-left: 10px; }
       @media (max-width: 500px) {
-        .sidebar .menu ul li {
-          float: left;
-          margin-right: 10px; } }
-      .sidebar .menu ul li a {
-        font-size: 1.9rem;
-        color: #D7101E;
-        text-decoration: underline;
-        font-weight: 800; }
-    .sidebar .menu ul .breakline {
-      display: block;
-      height: 0.1rem;
-      width: 250px;
-      border: 0;
-      border-top: 2px dashed #ACACAC;
-      margin: 1em 0;
-      padding: 0%; }
-      @media (max-width: 1024px) {
-        .sidebar .menu ul .breakline {
-          width: 100%; } }
-      @media (max-width: 480px) {
-        .sidebar .menu ul .breakline {
-          display: none; } }
-  @media (min-width: 768px) {
-    .sidebar .menu .li-fa-search, .sidebar .menu .li-fa-tags {
-      padding-left: 15px; } }
+        .sidebar .menu ul {
+          text-align: center;
+          width: 370px;
+          margin: 0 auto; } }
+      .sidebar .menu ul li {
+        list-style: none; }
+        @media (max-width: 500px) {
+          .sidebar .menu ul li {
+            float: left;
+            margin-right: 10px; } }
+        .sidebar .menu ul li a {
+          font-size: 1.9rem;
+          color: #D7101E;
+          text-decoration: underline;
+          font-weight: 800; }
+      .sidebar .menu ul .breakline {
+        display: block;
+        height: 0.1rem;
+        width: 250px;
+        border: 0;
+        border-top: 2px dashed #ACACAC;
+        margin: 1em 0;
+        padding: 0%; }
+        @media (max-width: 1024px) {
+          .sidebar .menu ul .breakline {
+            width: 100%; } }
+        @media (max-width: 480px) {
+          .sidebar .menu ul .breakline {
+            display: none; } }
 
 .footer {
   position: fixed;

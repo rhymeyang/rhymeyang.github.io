@@ -1,0 +1,256 @@
+
+
+
+    
+
+
+
+<!-- Include Data Base --> <!DOCTYPE html> <html lang="en" itemscope itemtype="http://schema.org/WebPage"> <head> <meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title>Docker系列 13 理解容器之间的连通性 | Vicky's Blog </title> <meta name=description content=""> <meta name="robots" content="index, follow"> <meta name=viewport content="width=device-width, initial-scale=1"> <meta http-equiv="cache-control" content="public"/> <meta http-equiv="pragma" content="public"> <meta name="keywords" content="Theme, Jekyll" /> <meta name="author" content="" /> <meta property="og:locale" content="en" /> <meta property="og:site_name" content="Vicky's Blog" /> <meta property="og:type" content="WebSite" /> <meta property="og:url" content="https://rhymeyang.github.io/docker_col/2017/08/06/docker-learn-13.html" /> <meta property="og:description" content="" /> <meta property="og:title" content="Docker系列 13 理解容器之间的连通性 - Vicky's Blog" /> <link rel="canonical" href="https://rhymeyang.github.io/docker_col/2017/08/06/docker-learn-13.html"> <link rel="alternate" type="application/rss+xml" title="Vicky's Blog" href="https://rhymeyang.github.io/feed.xml"> <script type="application/ld+json"> {"@context": "http://schema.org", "@type": "WebSite", "name": "", "headline": "Vicky's Blog", "author": {"@type": "Person", "name": {"Vicky's Blog"}}, "description": "", "url": "https://rhymeyang.github.io"} </script> <script type="text/javascript"> var GLOBAL_BASEURL = "https://rhymeyang.github.io"; </script> <link rel="icon" type="image/png" sizes="16x16" href="https://rhymeyang.github.io/assets/img/favicon/favicon-16x16.png"> <!-- #### VENDOR OFFLINE #### --> <!-- Bootstrap 3.3.6 - Offline --> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/bootstrap/css/bootstrap.min.css"> <!-- Font Awesome 5.03 - Offline --> <script defer src="https://rhymeyang.github.io/assets/vendor-off/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css"></script> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/fonts/space-mono/space-mono.min.css"> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/fonts/gloria-hallelujah/gloria-hallelujah.min.css"> <!-- Style Default --> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/stylesheets/main.css"> <!-- Google Analytics --> </head> <body> <div class="main" id="top"> <div class="container wrapper"> <div class="row"> <div class="col-sm-3 sidebar"> <div class="row avatar"> <a href="https://rhymeyang.github.io/"> <img class="img-responsive center-block avatar-img" src="https://rhymeyang.github.io/assets/img/avatar/blog.svg" height="165" width="165" alt="Vicky's Blog"> </a> </div> <div class="row header"> <h2><a href="https://rhymeyang.github.io/">Vicky </a></h2> </div> <div class="row menu"> <ul> <li> <i class="fa fa-home" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/">Home</a> </li> <hr class="breakline"> <li class="li-folder-open"> <i style="font-size: ;" class="fas fa-folder-open"></i>&nbsp;<a class="unlink">Blog</a> </li> <li class="li-fa-edit"> <i style="font-size: ;" class="fas fa-edit" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/general/" >General</a> </li> <li class="li-fa-docker"> <i style="font-size: ;" class="fab fa-docker" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/docker_col/" >Docker</a> </li> <li class="li-fa-table"> <i style="font-size: ;" class="fas fa-table" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/data_analysis/" >Data Analysis</a> </li> <li class="li-fa-tags"> <i style="font-size: ;" class="fas fa-tags" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/blog/tags/" >Tags</a> </li> <li class="li-fa-briefcase"> <i style="font-size: ;" class="fas fa-briefcase" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/blog/projects/" >Projects</a> </li> </ul> <div class="socials"> <div class="row"> <p></p> <p></p> </div> </div> </div> </div> <div class="col-sm-9 content-main"> <!-- Include Data Base --> <article class="post" itemscope itemtype="http://schema.org/BlogPosting"> <!-- Next Version <div class="readmode"> <a id="btn-readmode" class="pull-right btn btn-default btn-readmode" href="">Read Mode</a> </div> --> <div class="row title"> <h1>Docker系列 13 理解容器之间的连通性</h1> </div> <div class="row meta" datetime="2017-08-06"> <time class="col-sm-6 datetime"> <i class="fa fa-calendar" aria-hidden="true"></i> <span class="text tmargin ">August 06, 2017</span> </time> </div> <div class="row tag-list"> <i class="fa fa-tags" aria-hidden="true"></i> <a href="https://rhymeyang.github.io/blog/tags//linux">linux</a> <a href="https://rhymeyang.github.io/blog/tags//docker">docker</a> </div> <!-- <div class="row"> <ul id="markdown-toc"> <li><a href="#相关命令" id="markdown-toc-相关命令">相关命令</a></li> <li><a href="#容器间通信的三种方式" id="markdown-toc-容器间通信的三种方式">容器间通信的三种方式</a> <ul> <li><a href="#ip-通信" id="markdown-toc-ip-通信">IP 通信</a></li> <li><a href="#docker-dns-server" id="markdown-toc-docker-dns-server">Docker DNS Server</a></li> <li><a href="#joined-容器" id="markdown-toc-joined-容器">joined 容器</a></li> </ul> </li> </ul> <h2 id="相关命令">相关命令</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker network connect my_net2 0397b68b16ee
+
+docker run <span class="nt">-d</span> <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>web1 httpd</code></pre></figure> <p>当前 docker host 的网络拓扑结构如下图所示，今天我们将讨论这几个容器之间的连通性。</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_con_str.jpg" alt="docker host 的网络拓扑结构 @x60" /></p> <p>两个 busybox 容器都挂在 my_net2 上，应该能够互通，我们验证一下：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 88099301221b sh
+/ <span class="c"># ping -c 3 172.22.16.2</span>
+PING 172.22.16.2 <span class="o">(</span>172.22.16.2<span class="o">)</span>: 56 data bytes
+64 bytes from 172.22.16.2: <span class="nb">seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.048 ms
+64 bytes from 172.22.16.2: <span class="nb">seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.048 ms
+64 bytes from 172.22.16.2: <span class="nb">seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.048 ms
+
+<span class="nt">---</span> 172.22.16.2 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max <span class="o">=</span> 0.048/0.048/0.048 ms</code></pre></figure> <p>可见同一网络中的容器、网关之间都是可以通信的。</p> <p>my_net2 与默认 bridge 网络能通信吗？</p> <p>从拓扑图可知，两个网络属于不同的网桥，应该不能通信，我们通过实验验证一下，让 busybox 容器 ping httpd 容器：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">/ <span class="c"># ping -c 4 172.17.0.3</span>
+PING 172.17.0.3 <span class="o">(</span>172.17.0.3<span class="o">)</span>: 56 data bytes
+
+<span class="nt">---</span> 172.17.0.3 ping statistics <span class="nt">---</span>
+4 packets transmitted, 0 packets received, 100% packet loss</code></pre></figure> <p>确实 ping 不通，符合预期。</p> <p>“等等！不同的网络如果加上路由应该就可以通信了吧？”我已经听到有读者在建议了。</p> <p>这是一个非常非常好的想法。</p> <p>确实，如果 host 上对每个网络的都有一条路由，同时操作系统上打开了 ip forwarding，host 就成了一个路由器，挂接在不同网桥上的网络就能够相互通信。下面我们来看看 docker host 满不满足这些条件呢？</p> <p>ip r 查看 host 上的路由表：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ip r
+default via 192.168.1.1 dev ens33  proto static  metric 100 
+172.17.0.0/16 dev docker0  proto kernel  scope <span class="nb">link  </span>src 172.17.0.1 
+172.18.0.0/16 dev br-bb411a0ddf01  proto kernel  scope <span class="nb">link  </span>src 172.18.0.1 
+172.22.16.0/24 dev br-7d07ffb21af0  proto kernel  scope <span class="nb">link  </span>src 172.22.16.1 
+192.168.1.0/24 dev ens33  proto kernel  scope <span class="nb">link  </span>src 192.168.1.108  metric 100 
+
+<span class="nv">$ </span>ip route
+default via 192.168.1.1 dev ens33  proto static  metric 100 
+172.17.0.0/16 dev docker0  proto kernel  scope <span class="nb">link  </span>src 172.17.0.1 
+172.18.0.0/16 dev br-bb411a0ddf01  proto kernel  scope <span class="nb">link  </span>src 172.18.0.1 
+172.22.16.0/24 dev br-7d07ffb21af0  proto kernel  scope <span class="nb">link  </span>src 172.22.16.1 
+192.168.1.0/24 dev ens33  proto kernel  scope <span class="nb">link  </span>src 192.168.1.108  metric 100 </code></pre></figure> <p>172.17.0.0/16 和 172.22.16.0/24 两个网络的路由都定义好了。再看看 ip forwarding：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>sysctl net.ipv4.ip_forward
+net.ipv4.ip_forward <span class="o">=</span> 1</code></pre></figure> <p>ip forwarding 也已经启用了。</p> <p>条件都满足，为什么不能通行呢？</p> <p>我们还得看看 iptables：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>iptables-save
+......
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> docker0 <span class="nt">-o</span> br-7d07ffb21af0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-7d07ffb21af0 <span class="nt">-o</span> docker0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-bb411a0ddf01 <span class="nt">-o</span> br-7d07ffb21af0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-7d07ffb21af0 <span class="nt">-o</span> br-bb411a0ddf01 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> docker0 <span class="nt">-o</span> br-bb411a0ddf01 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-bb411a0ddf01 <span class="nt">-o</span> docker0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-j</span> RETURN
+......</code></pre></figure> <p>原因就在这里了：iptables DROP 掉了网桥 docker0 与 br-7d07ffb21af0 之间双向的流量。</p> <p>从规则的命名 DOCKER-ISOLATION 可知 docker 在设计上就是要隔离不同的 netwrok。</p> <p>那么接下来的问题是：怎样才能让 busybox 与 httpd 通信呢？</p> <p>答案是：为 httpd 容器添加一块 net_my2 的网卡。这个可以通过<code class="highlighter-rouge">docker network connect</code> 命令实现。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+88099301221b        busybox             <span class="s2">"sh"</span>                     About an hour ago   Up About an hour                        romantic_spence
+3613c3918ea3        busybox             <span class="s2">"sh"</span>                     About an hour ago   Up About an hour                        admiring_poitras
+07d6759fa9fe        httpd               <span class="s2">"httpd-foreground"</span>       14 hours ago        Up 14 hours         80/tcp              festive_kirch
+0397b68b16ee        httpd               <span class="s2">"httpd-foreground"</span>       14 hours ago        Up 14 hours         80/tcp              laughing_fermat
+b305cc1b397d        progrium/stress     <span class="s2">"/usr/bin/stress -..."</span>   15 hours ago        Up 15 hours                             objective_keller
+
+
+docker network connect my_net2 0397b68b16ee
+
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 0397b68b16ee bash
+root@0397b68b16ee:/usr/local/apache2# ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+20: eth0@if21: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.3/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:3/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+34: eth1@if35: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:16:10:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.22.16.3/24 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe16:1003/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>容器中增加了一个网卡 eth1，分配了 my_net2 的 IP 172.22.16.3。现在 busybox 应该能够访问 httpd 了，验证一下：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 88099301221b sh
+/ <span class="c"># ping -c 3 172.22.16.3</span>
+PING 172.22.16.3 <span class="o">(</span>172.22.16.3<span class="o">)</span>: 56 data bytes
+64 bytes from 172.22.16.3: <span class="nb">seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.217 ms
+64 bytes from 172.22.16.3: <span class="nb">seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.083 ms
+64 bytes from 172.22.16.3: <span class="nb">seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.060 ms
+
+<span class="nt">---</span> 172.22.16.3 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max <span class="o">=</span> 0.060/0.120/0.217 ms
+/ <span class="c"># wget 172.22.16.3</span>
+Connecting to 172.22.16.3 <span class="o">(</span>172.22.16.3:80<span class="o">)</span>
+index.html           100% |<span class="k">***********************************************************************************************</span>|    45   0:00:00 ETA
+/ <span class="c"># cat index.html </span>
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></pre></figure> <p>busybox 能够 ping 到 httpd，并且可以访问 httpd 的 web 服务。当前网络结构如图所示：</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_con_str_2.jpg" alt="网络结构 @x60" /></p> <h2 id="容器间通信的三种方式">容器间通信的三种方式</h2> <p>容器之间可通过 IP，Docker DNS Server 或 joined 容器三种方式通信。</p> <h3 id="ip-通信">IP 通信</h3> <p>从上一节的例子可以得出这样一个结论：两个容器要能通信，必须要有属于同一个网络的网卡。</p> <p>满足这个条件后，容器就可以通过 IP 交互了。具体做法是在容器创建时通过 <code class="highlighter-rouge">--network</code> 指定相应的网络，或者通过 <code class="highlighter-rouge">docker network connect</code> 将现有容器加入到指定网络。</p> <h3 id="docker-dns-server">Docker DNS Server</h3> <p>通过 IP 访问容器虽然满足了通信的需求，但还是不够灵活。因为我们在部署应用之前可能无法确定 IP，部署之后再指定要访问的 IP 会比较麻烦。对于这个问题，可以通过 docker 自带的 DNS 服务解决。</p> <p>从 Docker 1.10 版本开始，docker daemon 实现了一个内嵌的 DNS server，使容器可以直接通过“容器名”通信。方法很简单，只要在启动时用 –name 为容器命名就可以了。</p> <p>下面启动两个容器 bbox1 和 bbox2：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--name</span><span class="o">=</span>bbox1 busybox
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--name</span><span class="o">=</span>bbox2 busybox</code></pre></figure> <p>然后，bbox2 就可以直接 ping 到 bbox1 了：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker  <span class="nb">exec</span>  <span class="nt">-it</span> bbox2 sh
+/ <span class="c"># ping -c 3 bbox1</span>
+PING bbox1 <span class="o">(</span>172.22.16.5<span class="o">)</span>: 56 data bytes
+64 bytes from 172.22.16.5: <span class="nb">seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.108 ms
+64 bytes from 172.22.16.5: <span class="nb">seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.370 ms
+64 bytes from 172.22.16.5: <span class="nb">seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.125 ms
+
+<span class="nt">---</span> bbox1 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max <span class="o">=</span> 0.108/0.201/0.370 ms</code></pre></figure> <p>使用 docker DNS 有个限制：只能在 user-defined 网络中使用。也就是说，默认的 bridge 网络是无法使用 DNS 的。下面验证一下：</p> <p>创建 bbox3 和 bbox4，均连接到 bridge 网络。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker run <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>bbox3 busybox
+
+docker run <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>bbox4 busybox</code></pre></figure> <p>bbox4 无法 ping 到 bbox3。</p> <h3 id="joined-容器">joined 容器</h3> <p>joined 容器是另一种实现容器间通信的方式。</p> <p>joined 容器非常特别，它可以使两个或多个容器共享一个网络栈，共享网卡和配置信息，joined 容器之间可以通过 127.0.0.1 直接通信。请看下面的例子：</p> <p>先创建一个 httpd 容器，名字为 web1。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker run <span class="nt">-d</span> <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>web1 httpd</code></pre></figure> <p>然后创建 busybox 容器并通过 <code class="highlighter-rouge">--network=container:web1</code> 指定 jointed 容器为 web1：</p> <p>请注意 busybox 容器中的网络配置信息，下面我们查看一下 web1 的网络：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-d</span>  <span class="nt">--name</span><span class="o">=</span>web1 httpd
+89201c8e8dc54b5933be88fb8646af314ca8b46c1a41d301128f548cd3065f56
+<span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>container:web1 busybox
+/ <span class="c"># ip a</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+42: eth0@if43: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.2/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:2/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+
+
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> web1 bash
+root@89201c8e8dc5:/usr/local/apache2# ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+42: eth0@if43: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.2/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:2/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>busybox 和 web1 的网卡 mac 地址与 IP 完全一样，它们共享了相同的网络栈。busybox 可以直接用 127.0.0.1 访问 web1 的 http 服务。</p> <p>joined 容器非常适合以下场景：</p> <ol> <li>不同容器中的程序希望通过 loopback 高效快速地通信，比如 web server 与 app server。</li> <li>希望监控其他容器的网络流量，比如运行在独立容器中的网络监控程序。</li> </ol> 8523 </div> --> <div class="row content"> <ul id="markdown-toc"> <li><a href="#相关命令" id="markdown-toc-相关命令">相关命令</a></li> <li><a href="#容器间通信的三种方式" id="markdown-toc-容器间通信的三种方式">容器间通信的三种方式</a> <ul> <li><a href="#ip-通信" id="markdown-toc-ip-通信">IP 通信</a></li> <li><a href="#docker-dns-server" id="markdown-toc-docker-dns-server">Docker DNS Server</a></li> <li><a href="#joined-容器" id="markdown-toc-joined-容器">joined 容器</a></li> </ul> </li> </ul> <h2 id="相关命令">相关命令</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker network connect my_net2 0397b68b16ee
+
+docker run <span class="nt">-d</span> <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>web1 httpd</code></pre></figure> <p>当前 docker host 的网络拓扑结构如下图所示，今天我们将讨论这几个容器之间的连通性。</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_con_str.jpg" alt="docker host 的网络拓扑结构 @x60" /></p> <p>两个 busybox 容器都挂在 my_net2 上，应该能够互通，我们验证一下：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 88099301221b sh
+/ <span class="c"># ping -c 3 172.22.16.2</span>
+PING 172.22.16.2 <span class="o">(</span>172.22.16.2<span class="o">)</span>: 56 data bytes
+64 bytes from 172.22.16.2: <span class="nb">seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.048 ms
+64 bytes from 172.22.16.2: <span class="nb">seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.048 ms
+64 bytes from 172.22.16.2: <span class="nb">seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.048 ms
+
+<span class="nt">---</span> 172.22.16.2 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max <span class="o">=</span> 0.048/0.048/0.048 ms</code></pre></figure> <p>可见同一网络中的容器、网关之间都是可以通信的。</p> <p>my_net2 与默认 bridge 网络能通信吗？</p> <p>从拓扑图可知，两个网络属于不同的网桥，应该不能通信，我们通过实验验证一下，让 busybox 容器 ping httpd 容器：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">/ <span class="c"># ping -c 4 172.17.0.3</span>
+PING 172.17.0.3 <span class="o">(</span>172.17.0.3<span class="o">)</span>: 56 data bytes
+
+<span class="nt">---</span> 172.17.0.3 ping statistics <span class="nt">---</span>
+4 packets transmitted, 0 packets received, 100% packet loss</code></pre></figure> <p>确实 ping 不通，符合预期。</p> <p>“等等！不同的网络如果加上路由应该就可以通信了吧？”我已经听到有读者在建议了。</p> <p>这是一个非常非常好的想法。</p> <p>确实，如果 host 上对每个网络的都有一条路由，同时操作系统上打开了 ip forwarding，host 就成了一个路由器，挂接在不同网桥上的网络就能够相互通信。下面我们来看看 docker host 满不满足这些条件呢？</p> <p>ip r 查看 host 上的路由表：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ip r
+default via 192.168.1.1 dev ens33  proto static  metric 100 
+172.17.0.0/16 dev docker0  proto kernel  scope <span class="nb">link  </span>src 172.17.0.1 
+172.18.0.0/16 dev br-bb411a0ddf01  proto kernel  scope <span class="nb">link  </span>src 172.18.0.1 
+172.22.16.0/24 dev br-7d07ffb21af0  proto kernel  scope <span class="nb">link  </span>src 172.22.16.1 
+192.168.1.0/24 dev ens33  proto kernel  scope <span class="nb">link  </span>src 192.168.1.108  metric 100 
+
+<span class="nv">$ </span>ip route
+default via 192.168.1.1 dev ens33  proto static  metric 100 
+172.17.0.0/16 dev docker0  proto kernel  scope <span class="nb">link  </span>src 172.17.0.1 
+172.18.0.0/16 dev br-bb411a0ddf01  proto kernel  scope <span class="nb">link  </span>src 172.18.0.1 
+172.22.16.0/24 dev br-7d07ffb21af0  proto kernel  scope <span class="nb">link  </span>src 172.22.16.1 
+192.168.1.0/24 dev ens33  proto kernel  scope <span class="nb">link  </span>src 192.168.1.108  metric 100 </code></pre></figure> <p>172.17.0.0/16 和 172.22.16.0/24 两个网络的路由都定义好了。再看看 ip forwarding：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>sysctl net.ipv4.ip_forward
+net.ipv4.ip_forward <span class="o">=</span> 1</code></pre></figure> <p>ip forwarding 也已经启用了。</p> <p>条件都满足，为什么不能通行呢？</p> <p>我们还得看看 iptables：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>iptables-save
+......
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> docker0 <span class="nt">-o</span> br-7d07ffb21af0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-7d07ffb21af0 <span class="nt">-o</span> docker0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-bb411a0ddf01 <span class="nt">-o</span> br-7d07ffb21af0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-7d07ffb21af0 <span class="nt">-o</span> br-bb411a0ddf01 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> docker0 <span class="nt">-o</span> br-bb411a0ddf01 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-i</span> br-bb411a0ddf01 <span class="nt">-o</span> docker0 <span class="nt">-j</span> DROP
+<span class="nt">-A</span> DOCKER-ISOLATION <span class="nt">-j</span> RETURN
+......</code></pre></figure> <p>原因就在这里了：iptables DROP 掉了网桥 docker0 与 br-7d07ffb21af0 之间双向的流量。</p> <p>从规则的命名 DOCKER-ISOLATION 可知 docker 在设计上就是要隔离不同的 netwrok。</p> <p>那么接下来的问题是：怎样才能让 busybox 与 httpd 通信呢？</p> <p>答案是：为 httpd 容器添加一块 net_my2 的网卡。这个可以通过<code class="highlighter-rouge">docker network connect</code> 命令实现。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+88099301221b        busybox             <span class="s2">"sh"</span>                     About an hour ago   Up About an hour                        romantic_spence
+3613c3918ea3        busybox             <span class="s2">"sh"</span>                     About an hour ago   Up About an hour                        admiring_poitras
+07d6759fa9fe        httpd               <span class="s2">"httpd-foreground"</span>       14 hours ago        Up 14 hours         80/tcp              festive_kirch
+0397b68b16ee        httpd               <span class="s2">"httpd-foreground"</span>       14 hours ago        Up 14 hours         80/tcp              laughing_fermat
+b305cc1b397d        progrium/stress     <span class="s2">"/usr/bin/stress -..."</span>   15 hours ago        Up 15 hours                             objective_keller
+
+
+docker network connect my_net2 0397b68b16ee
+
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 0397b68b16ee bash
+root@0397b68b16ee:/usr/local/apache2# ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+20: eth0@if21: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.3/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:3/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+34: eth1@if35: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:16:10:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.22.16.3/24 scope global eth1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe16:1003/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>容器中增加了一个网卡 eth1，分配了 my_net2 的 IP 172.22.16.3。现在 busybox 应该能够访问 httpd 了，验证一下：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 88099301221b sh
+/ <span class="c"># ping -c 3 172.22.16.3</span>
+PING 172.22.16.3 <span class="o">(</span>172.22.16.3<span class="o">)</span>: 56 data bytes
+64 bytes from 172.22.16.3: <span class="nb">seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.217 ms
+64 bytes from 172.22.16.3: <span class="nb">seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.083 ms
+64 bytes from 172.22.16.3: <span class="nb">seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.060 ms
+
+<span class="nt">---</span> 172.22.16.3 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max <span class="o">=</span> 0.060/0.120/0.217 ms
+/ <span class="c"># wget 172.22.16.3</span>
+Connecting to 172.22.16.3 <span class="o">(</span>172.22.16.3:80<span class="o">)</span>
+index.html           100% |<span class="k">***********************************************************************************************</span>|    45   0:00:00 ETA
+/ <span class="c"># cat index.html </span>
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</code></pre></figure> <p>busybox 能够 ping 到 httpd，并且可以访问 httpd 的 web 服务。当前网络结构如图所示：</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_con_str_2.jpg" alt="网络结构 @x60" /></p> <h2 id="容器间通信的三种方式">容器间通信的三种方式</h2> <p>容器之间可通过 IP，Docker DNS Server 或 joined 容器三种方式通信。</p> <h3 id="ip-通信">IP 通信</h3> <p>从上一节的例子可以得出这样一个结论：两个容器要能通信，必须要有属于同一个网络的网卡。</p> <p>满足这个条件后，容器就可以通过 IP 交互了。具体做法是在容器创建时通过 <code class="highlighter-rouge">--network</code> 指定相应的网络，或者通过 <code class="highlighter-rouge">docker network connect</code> 将现有容器加入到指定网络。</p> <h3 id="docker-dns-server">Docker DNS Server</h3> <p>通过 IP 访问容器虽然满足了通信的需求，但还是不够灵活。因为我们在部署应用之前可能无法确定 IP，部署之后再指定要访问的 IP 会比较麻烦。对于这个问题，可以通过 docker 自带的 DNS 服务解决。</p> <p>从 Docker 1.10 版本开始，docker daemon 实现了一个内嵌的 DNS server，使容器可以直接通过“容器名”通信。方法很简单，只要在启动时用 –name 为容器命名就可以了。</p> <p>下面启动两个容器 bbox1 和 bbox2：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--name</span><span class="o">=</span>bbox1 busybox
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--name</span><span class="o">=</span>bbox2 busybox</code></pre></figure> <p>然后，bbox2 就可以直接 ping 到 bbox1 了：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker  <span class="nb">exec</span>  <span class="nt">-it</span> bbox2 sh
+/ <span class="c"># ping -c 3 bbox1</span>
+PING bbox1 <span class="o">(</span>172.22.16.5<span class="o">)</span>: 56 data bytes
+64 bytes from 172.22.16.5: <span class="nb">seq</span><span class="o">=</span>0 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.108 ms
+64 bytes from 172.22.16.5: <span class="nb">seq</span><span class="o">=</span>1 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.370 ms
+64 bytes from 172.22.16.5: <span class="nb">seq</span><span class="o">=</span>2 <span class="nv">ttl</span><span class="o">=</span>64 <span class="nb">time</span><span class="o">=</span>0.125 ms
+
+<span class="nt">---</span> bbox1 ping statistics <span class="nt">---</span>
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max <span class="o">=</span> 0.108/0.201/0.370 ms</code></pre></figure> <p>使用 docker DNS 有个限制：只能在 user-defined 网络中使用。也就是说，默认的 bridge 网络是无法使用 DNS 的。下面验证一下：</p> <p>创建 bbox3 和 bbox4，均连接到 bridge 网络。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker run <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>bbox3 busybox
+
+docker run <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>bbox4 busybox</code></pre></figure> <p>bbox4 无法 ping 到 bbox3。</p> <h3 id="joined-容器">joined 容器</h3> <p>joined 容器是另一种实现容器间通信的方式。</p> <p>joined 容器非常特别，它可以使两个或多个容器共享一个网络栈，共享网卡和配置信息，joined 容器之间可以通过 127.0.0.1 直接通信。请看下面的例子：</p> <p>先创建一个 httpd 容器，名字为 web1。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">docker run <span class="nt">-d</span> <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>web1 httpd</code></pre></figure> <p>然后创建 busybox 容器并通过 <code class="highlighter-rouge">--network=container:web1</code> 指定 jointed 容器为 web1：</p> <p>请注意 busybox 容器中的网络配置信息，下面我们查看一下 web1 的网络：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-d</span>  <span class="nt">--name</span><span class="o">=</span>web1 httpd
+89201c8e8dc54b5933be88fb8646af314ca8b46c1a41d301128f548cd3065f56
+<span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>container:web1 busybox
+/ <span class="c"># ip a</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+42: eth0@if43: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.2/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:2/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+
+
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> web1 bash
+root@89201c8e8dc5:/usr/local/apache2# ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+42: eth0@if43: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.2/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:2/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>busybox 和 web1 的网卡 mac 地址与 IP 完全一样，它们共享了相同的网络栈。busybox 可以直接用 127.0.0.1 访问 web1 的 http 服务。</p> <p>joined 容器非常适合以下场景：</p> <ol> <li>不同容器中的程序希望通过 loopback 高效快速地通信，比如 web server 与 app server。</li> <li>希望监控其他容器的网络流量，比如运行在独立容器中的网络监控程序。</li> </ol> <div class="col-sm-2 image pull-right"> <img class="avatar-img avata" style='border="0";border-radius: 50%' src="https://rhymeyang.github.io/assets/img/author/blog.svg" alt="" height="32px" width="32px"> </div> </div> <ul class="pager"> <li><a href="/docker_col/2017/08/06/docker-learn-12.html">Docker系列 12 容器网络</a></li> <li><a href="/docker_col/2017/08/06/docker-learn-14.html">Docker系列 14 容器如何访问外部世界</a></li> </ul> </article> </div> </div> </div> <div class="footer"> <div class="container-fluid"> <div class="row-fluid"> <div class="col-sm-4 copyright"> <span>Vicky's Blog © 2018 • All right reserved.</span> </div> <div class="col-sm-4 message"> <span>Simplicity is fashionable.</span> </div> <div class="col-sm-4 madeby"> <span>Made with&nbsp;<a href="https://jekyllrb.com" target="_blank">Jekyll</a>&nbsp;by&nbsp;Vicky.</span> </div> <a class="pull-right top" href="#top"><i class="fa fa-caret-up" aria-hidden="true"></i></a> </div> </div> </div> </div> <!-- Vendor - Global | Applicable to every website --> <!-- #### VENDOR OFFLINE #### --> <script src="https://rhymeyang.github.io/assets/vendor-off/jquery/js/jquery.min.js"></script> <script src="https://rhymeyang.github.io/assets/vendor-off/bootstrap/js/bootstrap.min.js"></script> <script defer src="https://rhymeyang.github.io/assets/vendor-off/font-awesome/svg-with-js/js/fontawesome-all.min.js"></script> <script src="https://rhymeyang.github.io/assets/javascripts/jekyll-spotify-plugin.min.js"></script> <!-- Specific for each pages. --> <script type="text/javascript" src="https://rhymeyang.github.io/assets/javascripts/post.js"></script> <!-- Add 'ga' function from Google Analytics to certain site links in Posts --> <!-- App | Global --> <script src="https://rhymeyang.github.io/assets/javascripts/global.js"></script> </body> </html>

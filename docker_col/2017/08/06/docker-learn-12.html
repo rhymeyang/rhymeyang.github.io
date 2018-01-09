@@ -1,0 +1,450 @@
+
+
+
+    
+
+
+
+<!-- Include Data Base --> <!DOCTYPE html> <html lang="en" itemscope itemtype="http://schema.org/WebPage"> <head> <meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title>Docker系列 12 容器网络 | Vicky's Blog </title> <meta name=description content=""> <meta name="robots" content="index, follow"> <meta name=viewport content="width=device-width, initial-scale=1"> <meta http-equiv="cache-control" content="public"/> <meta http-equiv="pragma" content="public"> <meta name="keywords" content="Theme, Jekyll" /> <meta name="author" content="" /> <meta property="og:locale" content="en" /> <meta property="og:site_name" content="Vicky's Blog" /> <meta property="og:type" content="WebSite" /> <meta property="og:url" content="https://rhymeyang.github.io/docker_col/2017/08/06/docker-learn-12.html" /> <meta property="og:description" content="" /> <meta property="og:title" content="Docker系列 12 容器网络 - Vicky's Blog" /> <link rel="canonical" href="https://rhymeyang.github.io/docker_col/2017/08/06/docker-learn-12.html"> <link rel="alternate" type="application/rss+xml" title="Vicky's Blog" href="https://rhymeyang.github.io/feed.xml"> <script type="application/ld+json"> {"@context": "http://schema.org", "@type": "WebSite", "name": "", "headline": "Vicky's Blog", "author": {"@type": "Person", "name": {"Vicky's Blog"}}, "description": "", "url": "https://rhymeyang.github.io"} </script> <script type="text/javascript"> var GLOBAL_BASEURL = "https://rhymeyang.github.io"; </script> <link rel="icon" type="image/png" sizes="16x16" href="https://rhymeyang.github.io/assets/img/favicon/favicon-16x16.png"> <!-- #### VENDOR OFFLINE #### --> <!-- Bootstrap 3.3.6 - Offline --> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/bootstrap/css/bootstrap.min.css"> <!-- Font Awesome 5.03 - Offline --> <script defer src="https://rhymeyang.github.io/assets/vendor-off/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css"></script> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/fonts/space-mono/space-mono.min.css"> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/fonts/gloria-hallelujah/gloria-hallelujah.min.css"> <!-- Style Default --> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/stylesheets/main.css"> <!-- Google Analytics --> </head> <body> <div class="main" id="top"> <div class="container wrapper"> <div class="row"> <div class="col-sm-3 sidebar"> <div class="row avatar"> <a href="https://rhymeyang.github.io/"> <img class="img-responsive center-block avatar-img" src="https://rhymeyang.github.io/assets/img/avatar/blog.svg" height="165" width="165" alt="Vicky's Blog"> </a> </div> <div class="row header"> <h2><a href="https://rhymeyang.github.io/">Vicky </a></h2> </div> <div class="row menu"> <ul> <li> <i class="fa fa-home" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/">Home</a> </li> <hr class="breakline"> <li class="li-folder-open"> <i style="font-size: ;" class="fas fa-folder-open"></i>&nbsp;<a class="unlink">Blog</a> </li> <li class="li-fa-edit"> <i style="font-size: ;" class="fas fa-edit" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/general/" >General</a> </li> <li class="li-fa-docker"> <i style="font-size: ;" class="fab fa-docker" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/docker_col/" >Docker</a> </li> <li class="li-fa-table"> <i style="font-size: ;" class="fas fa-table" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/data_analysis/" >Data Analysis</a> </li> <li class="li-fa-tags"> <i style="font-size: ;" class="fas fa-tags" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/blog/tags/" >Tags</a> </li> <li class="li-fa-briefcase"> <i style="font-size: ;" class="fas fa-briefcase" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/blog/projects/" >Projects</a> </li> </ul> <div class="socials"> <div class="row"> <p></p> <p></p> </div> </div> </div> </div> <div class="col-sm-9 content-main"> <!-- Include Data Base --> <article class="post" itemscope itemtype="http://schema.org/BlogPosting"> <!-- Next Version <div class="readmode"> <a id="btn-readmode" class="pull-right btn btn-default btn-readmode" href="">Read Mode</a> </div> --> <div class="row title"> <h1>Docker系列 12 容器网络</h1> </div> <div class="row meta" datetime="2017-08-06"> <time class="col-sm-6 datetime"> <i class="fa fa-calendar" aria-hidden="true"></i> <span class="text tmargin ">August 06, 2017</span> </time> </div> <div class="row tag-list"> <i class="fa fa-tags" aria-hidden="true"></i> <a href="https://rhymeyang.github.io/blog/tags//linux">linux</a> <a href="https://rhymeyang.github.io/blog/tags//docker">docker</a> </div> <!-- <div class="row"> <ul id="markdown-toc"> <li><a href="#相关命令" id="markdown-toc-相关命令">相关命令</a></li> <li><a href="#none-和-host-网络的适用场景" id="markdown-toc-none-和-host-网络的适用场景">none 和 host 网络的适用场景</a> <ul> <li><a href="#none-网络" id="markdown-toc-none-网络">none 网络</a></li> <li><a href="#host-网络" id="markdown-toc-host-网络">host 网络</a></li> </ul> </li> <li><a href="#学容器必须懂-bridge-网络" id="markdown-toc-学容器必须懂-bridge-网络">学容器必须懂 bridge 网络</a></li> <li><a href="#自定义容器网络" id="markdown-toc-自定义容器网络">自定义容器网络</a></li> </ul> <h2 id="相关命令">相关命令</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">yum <span class="nb">install </span>bridge-utils
+
+brctl show
+docker network <span class="nb">ls
+
+</span>docker network create <span class="nt">--driver</span> bridge my_net
+
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>none busybox
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>host busybox
+
+docker network create <span class="nt">--driver</span> bridge <span class="nt">--subnet</span> 172.22.16.0/24 <span class="nt">--gateway</span> 172.22.16.1 my_net2
+
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--ip</span> 172.22.16.88 busybox
+
+docker pull httpd:2.2</code></pre></figure> <p>sequence</p> <ul> <li><code class="highlighter-rouge">docker run -it --network=host --name='hostbusy1' busybox</code></li> <li><code class="highlighter-rouge">docker run -it --name='d0busy1' busybox</code></li> <li><code class="highlighter-rouge">docker run -it --name='d0httpd1' httpd:2.2</code></li> </ul> <h2 id="none-和-host-网络的适用场景">none 和 host 网络的适用场景</h2> <ul> <li>Docker 提供的几种原生网络</li> <li>创建自定义网络</li> <li>容器之间通信</li> <li>容器与外界交互</li> </ul> <p>Docker 网络从覆盖范围可分为单个 host 上的容器网络和跨多个 host 的网络，本章重点讨论前一种。</p> <p>Docker 安装时会自动在 host 上创建三个网络，我们可用 docker network ls 命令查看：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network <span class="nb">ls
+</span>NETWORK ID          NAME                DRIVER              SCOPE
+2ac6093c3709        bridge              bridge              <span class="nb">local
+</span>5dc87272633f        host                host                <span class="nb">local
+</span>773b33d8d6e3        none                null                <span class="nb">local</span></code></pre></figure> <h3 id="none-网络">none 网络</h3> <p>故名思议，none 网络就是什么都没有的网络。挂在这个网络下的容器除了 <code class="highlighter-rouge">lo</code>，没有其他任何网卡。容器创建时，可以通过 <code class="highlighter-rouge">--network=none</code> 指定使用 none 网络。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>none busybox
+/ <span class="c"># ifconfig</span>
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:0 <span class="o">(</span>0.0 B<span class="o">)</span>  TX bytes:0 <span class="o">(</span>0.0 B<span class="o">)</span></code></pre></figure> <p>这样一个封闭的网络有什么用呢？</p> <p>其实还真有应用场景。封闭意味着隔离，一些对安全性要求高并且不需要联网的应用可以使用 none 网络。</p> <p>比如某个容器的唯一用途是生成随机密码，就可以放到 none 网络中避免密码被窃取。</p> <p>当然大部分容器是需要网络的，我们接着看 host 网络。</p> <h3 id="host-网络">host 网络</h3> <p>连接到 host 网络的容器共享 Docker host 的网络栈，容器的网络配置与 host 完全一样。可以通过 <code class="highlighter-rouge">--network=host</code> 指定使用 host 网络。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>host busybox
+/ <span class="c"># ip l</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast qlen 1000
+    <span class="nb">link</span>/ether 00:0c:29:78:58:74 brd ff:ff:ff:ff:ff:ff
+3: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:f9:2e:dc:f7 brd ff:ff:ff:ff:ff:ff
+17: veth4ba89ce@if16: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue master docker0 
+    <span class="nb">link</span>/ether da:69:0a:7b:a0:53 brd ff:ff:ff:ff:ff:ff</code></pre></figure> <p>在容器中可以看到 host 的所有网卡，并且连 <code class="highlighter-rouge">hostname</code> 也是 host 的。host 网络的使用场景又是什么呢？</p> <p>直接使用 Docker host 的网络最大的好处就是性能，如果容器对网络传输效率有较高要求，则可以选择 host 网络。当然不便之处就是牺牲一些灵活性，比如要考虑端口冲突问题，Docker host 上已经使用的端口就不能再用了。</p> <p>Docker host 的另一个用途是让容器可以直接配置 host 网路。比如某些跨 host 的网络解决方案，其本身也是以容器方式运行的，这些方案需要对网络进行配置，比如管理 iptables。</p> <h2 id="学容器必须懂-bridge-网络">学容器必须懂 bridge 网络</h2> <p>本节学习应用最广泛也是默认的 bridge 网络。</p> <p>Docker 安装时会创建一个 命名为 docker0 的 linux bridge。如果不指定<code class="highlighter-rouge">--network</code>，创建的容器默认都会挂到 docker0 上。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="o">[</span>root@dockerserver ~]# docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>host busybox
+/ <span class="c"># brctl show</span>
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+docker0   8000.0242f92edcf7 no    veth4ba89ce</code></pre></figure> <p>当前 docker0 上没有任何其他网络设备，我们创建一个容器看看有什么变化。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="o">[</span>root@dockerserver ~]# brctl show
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+docker0   8000.0242f92edcf7 no    veth4ba89ce</code></pre></figure> <p>一个新的网络接口 <code class="highlighter-rouge">veth4ba89ce</code> 被挂到了 <code class="highlighter-rouge">docker0</code> 上， <code class="highlighter-rouge">veth4ba89ce</code> 就是新创建容器的虚拟网卡。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">yum <span class="nb">install </span>bridge-utils</code></pre></figure> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="c"># busybox</span>
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 0397b68b16ee  /bin/sh
+<span class="c"># httpd</span>
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> d0httpd1 bash
+root@0397b68b16ee:/usr/local/apache2# ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+20: eth0@if21: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.3/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:3/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>容器有一个网卡 eth0@if21。大家可能会问了，为什么不是 veth4ba89ce 呢？</p> <p>实际上 <code class="highlighter-rouge">eth0@if21</code> 和 <code class="highlighter-rouge">veth4ba89ce</code> 是一对 veth pair。veth pair 是一种成对出现的特殊网络设备，可以把它们想象成由一根虚拟网线连接起来的一对网卡，网卡的一头（eth0@if21）在容器中，另一头（veth4ba89ce）挂在网桥 docker0 上，其效果就是将 eth0@if21 也挂在了 docker0 上。</p> <p>我们还看到 eth0@if21 已经配置了 IP 172.17.0.3，为什么是这个网段呢？让我们通过 docker network inspect bridge 看一下 bridge 网络的配置信息:</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network inspect bridge
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"Name"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"Id"</span>: <span class="s2">"2ac6093c3709b3bd027129eb52aa4bc74f2e4e612f4050d2b493eb2926c8bf18"</span>,
+        <span class="s2">"Created"</span>: <span class="s2">"2017-06-30T05:20:41.715140335-04:00"</span>,
+        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
+        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
+        <span class="s2">"IPAM"</span>: <span class="o">{</span>
+            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
+            <span class="s2">"Options"</span>: null,
+            <span class="s2">"Config"</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">"Subnet"</span>: <span class="s2">"172.17.0.0/16"</span>,
+                    <span class="s2">"Gateway"</span>: <span class="s2">"172.17.0.1"</span>
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
+        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
+        <span class="s2">"Containers"</span>: <span class="o">{</span>
+            <span class="s2">"0397b68b16eed56f18cb53e22dfc8e453e6faf8ec056f3519c62e531baebc011"</span>: <span class="o">{</span>
+                <span class="s2">"Name"</span>: <span class="s2">"laughing_fermat"</span>,
+                <span class="s2">"EndpointID"</span>: <span class="s2">"0de8ef5773ff6d1edc44b91d5ccefdd43836d7a2aee090059b8d7bc59f1216a1"</span>,
+                <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:03"</span>,
+                <span class="s2">"IPv4Address"</span>: <span class="s2">"172.17.0.3/16"</span>,
+                <span class="s2">"IPv6Address"</span>: <span class="s2">""</span>
+            <span class="o">}</span>,
+            <span class="s2">"07d6759fa9fe372b64097c769121a31c0c8347a0670e3d327d0641e7472e083b"</span>: <span class="o">{</span>
+                <span class="s2">"Name"</span>: <span class="s2">"festive_kirch"</span>,
+                <span class="s2">"EndpointID"</span>: <span class="s2">"7ac97bfc80d6fd060b2dc6fb38f031767a97dcec3f573e76186b37903a484b4c"</span>,
+                <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:04"</span>,
+                <span class="s2">"IPv4Address"</span>: <span class="s2">"172.17.0.4/16"</span>,
+                <span class="s2">"IPv6Address"</span>: <span class="s2">""</span>
+            <span class="o">}</span>,
+            <span class="s2">"b305cc1b397d861bd39cf655b118b24b8d0f0125acccc825450af2be423c5d6b"</span>: <span class="o">{</span>
+                <span class="s2">"Name"</span>: <span class="s2">"objective_keller"</span>,
+                <span class="s2">"EndpointID"</span>: <span class="s2">"62f55799f8e1e1113e40057d320d69f381e81dcee054de6f74673530dc406d5b"</span>,
+                <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:02"</span>,
+                <span class="s2">"IPv4Address"</span>: <span class="s2">"172.17.0.2/16"</span>,
+                <span class="s2">"IPv6Address"</span>: <span class="s2">""</span>
+            <span class="o">}</span>
+        <span class="o">}</span>,
+        <span class="s2">"Options"</span>: <span class="o">{</span>
+            <span class="s2">"com.docker.network.bridge.default_bridge"</span>: <span class="s2">"true"</span>,
+            <span class="s2">"com.docker.network.bridge.enable_icc"</span>: <span class="s2">"true"</span>,
+            <span class="s2">"com.docker.network.bridge.enable_ip_masquerade"</span>: <span class="s2">"true"</span>,
+            <span class="s2">"com.docker.network.bridge.host_binding_ipv4"</span>: <span class="s2">"0.0.0.0"</span>,
+            <span class="s2">"com.docker.network.bridge.name"</span>: <span class="s2">"docker0"</span>,
+            <span class="s2">"com.docker.network.driver.mtu"</span>: <span class="s2">"1500"</span>
+        <span class="o">}</span>,
+        <span class="s2">"Labels"</span>: <span class="o">{}</span>
+    <span class="o">}</span>
+<span class="o">]</span></code></pre></figure> <p>原来 bridge 网络配置的 subnet 就是 172.17.0.0/16，并且网关是 172.17.0.1。这个网关在哪儿呢？大概你已经猜出来了，就是 docker0。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ifconfig docker0
+docker0: <span class="nv">flags</span><span class="o">=</span>4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 0.0.0.0
+        inet6 fe80::42:f9ff:fe2e:dcf7  prefixlen 64  scopeid 0x20&lt;<span class="nb">link</span><span class="o">&gt;</span>
+        ether 02:42:f9:2e:dc:f7  txqueuelen 0  <span class="o">(</span>Ethernet<span class="o">)</span>
+        RX packets 3797  bytes 72475492 <span class="o">(</span>69.1 MiB<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 7714  bytes 72806297 <span class="o">(</span>69.4 MiB<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</code></pre></figure> <p>当前容器网络拓扑结构如图所示：</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_str.jpg" alt="网络拓扑 @x60" /></p> <p>容器创建时，docker 会自动从 172.17.0.0/16 中分配一个 IP，这里 16 位的掩码保证有足够多的 IP 可以供容器使用。</p> <p>除了 none, host, bridge 这三个自动创建的网络，用户也可以根据业务需要创建 user-defined 网络。</p> <h2 id="自定义容器网络">自定义容器网络</h2> <p>除了 none, host, bridge 这三个自动创建的网络，用户也可以根据业务需要创建 user-defined 网络。 Docker 提供三种 user-defined 网络驱动：bridge, overlay 和 macvlan。overlay 和 macvlan 用于创建跨主机的网络，我们后面有章节单独讨论。</p> <p>可通过 bridge 驱动创建类似前面默认的 bridge 网络，例如：</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/self_defind_bridge.jpg" alt="自定义bridge @x100" /></p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network create <span class="nt">--driver</span> bridge my_net
+bb411a0ddf01733af862f574a7a7c4fa0ab9a3b321a36f281f14486b0a70e075</code></pre></figure> <p>查看一下当前 host 的网络结构变化：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>brctl show
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+br-bb411a0ddf01   8000.0242d8f01793 no    
+docker0   8000.0242f92edcf7 no    veth4ba89ce
+              veth846b10b
+              veth9d22376</code></pre></figure> <p>新增了一个网桥 br-bb411a0ddf01 ，这里 bb411a0ddf01 正好新建 bridge 网络 my_net 的短 id。执行 <code class="highlighter-rouge">docker network inspect</code> 查看一下 <code class="highlighter-rouge">my_net</code> 的配置信息：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network inspect my_net
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"Name"</span>: <span class="s2">"my_net"</span>,
+        <span class="s2">"Id"</span>: <span class="s2">"bb411a0ddf01733af862f574a7a7c4fa0ab9a3b321a36f281f14486b0a70e075"</span>,
+        <span class="s2">"Created"</span>: <span class="s2">"2017-06-30T12:05:17.870472472-04:00"</span>,
+        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
+        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
+        <span class="s2">"IPAM"</span>: <span class="o">{</span>
+            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
+            <span class="s2">"Options"</span>: <span class="o">{}</span>,
+            <span class="s2">"Config"</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">"Subnet"</span>: <span class="s2">"172.18.0.0/16"</span>,
+                    <span class="s2">"Gateway"</span>: <span class="s2">"172.18.0.1"</span>
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
+        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
+        <span class="s2">"Containers"</span>: <span class="o">{}</span>,
+        <span class="s2">"Options"</span>: <span class="o">{}</span>,
+        <span class="s2">"Labels"</span>: <span class="o">{}</span>
+    <span class="o">}</span>
+<span class="o">]</span></code></pre></figure> <p>这里 172.18.0.0/16 是 Docker 自动分配的 IP 网段。</p> <p>我们可以自己指定 IP 网段吗？ 答案是：可以。</p> <p>只需在创建网段时指定 <code class="highlighter-rouge">--subnet</code> 和 <code class="highlighter-rouge">--gateway</code> 参数：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network create <span class="nt">--driver</span> bridge <span class="nt">--subnet</span> 172.22.16.0/24 <span class="nt">--gateway</span> 172.22.16.1 my_net2
+7d07ffb21af0ed4616286afca0a213addff1b69502428313cf8de31bc113c190
+
+<span class="nv">$ </span>docker network inspect my_net2
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"Name"</span>: <span class="s2">"my_net2"</span>,
+        <span class="s2">"Id"</span>: <span class="s2">"7d07ffb21af0ed4616286afca0a213addff1b69502428313cf8de31bc113c190"</span>,
+        <span class="s2">"Created"</span>: <span class="s2">"2017-06-30T12:10:57.061502441-04:00"</span>,
+        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
+        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
+        <span class="s2">"IPAM"</span>: <span class="o">{</span>
+            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
+            <span class="s2">"Options"</span>: <span class="o">{}</span>,
+            <span class="s2">"Config"</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">"Subnet"</span>: <span class="s2">"172.22.16.0/24"</span>,
+                    <span class="s2">"Gateway"</span>: <span class="s2">"172.22.16.1"</span>
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
+        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
+        <span class="s2">"Containers"</span>: <span class="o">{}</span>,
+        <span class="s2">"Options"</span>: <span class="o">{}</span>,
+        <span class="s2">"Labels"</span>: <span class="o">{}</span>
+    <span class="o">}</span>
+<span class="o">]</span>
+
+<span class="nv">$ </span>brctl show
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+br-7d07ffb21af0   8000.0242031983bd no    
+br-bb411a0ddf01   8000.0242d8f01793 no    
+docker0   8000.0242f92edcf7 no    veth4ba89ce
+              veth846b10b
+              veth9d22376</code></pre></figure> <p>这里我们创建了新的 bridge 网络 my_net2，网段为 172.22.16.0/24，网关为 172.22.16.1。与前面一样，网关在 my_net2 对应的网桥 br-7d07ffb21af0 上：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ifconfig br-7d07ffb21af0
+br-7d07ffb21af0: <span class="nv">flags</span><span class="o">=</span>4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+        inet 172.22.16.1  netmask 255.255.255.0  broadcast 0.0.0.0
+        ether 02:42:03:19:83:bd  txqueuelen 0  <span class="o">(</span>Ethernet<span class="o">)</span>
+        RX packets 0  bytes 0 <span class="o">(</span>0.0 B<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 <span class="o">(</span>0.0 B<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</code></pre></figure> <p>容器要使用新的网络，需要在启动时通过 –network 指定：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 busybox
+/ <span class="c"># ip a</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+26: eth0@if27: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:ac:16:10:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.22.16.2/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe16:1002/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>容器分配到的 IP 为 172.22.16.2。</p> <p>到目前为止，容器的 IP 都是 docker 自动从 subnet 中分配，我们能否指定一个静态 IP 呢？</p> <p>答案是：可以，通过<code class="highlighter-rouge">--ip</code>指定。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--ip</span> 172.22.16.88 busybox
+/ <span class="c"># ip a</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+28: eth0@if29: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:ac:16:10:58 brd ff:ff:ff:ff:ff:ff
+    inet 172.22.16.88/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe16:1058/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+/ <span class="c"># </span></code></pre></figure> <blockquote> <p>注：只有使用 <code class="highlighter-rouge">--subnet</code> 创建的网络才能指定静态 IP。</p> </blockquote> <p>my_net 创建时没有指定 <code class="highlighter-rouge">--subnet</code>，如果指定静态 IP 报错如下：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net <span class="nt">--ip</span> 172.22.16.88 busybox
+docker: Error response from daemon: User specified IP address is supported only when connecting to networks with user configured subnets.</code></pre></figure> <p>好了，我们来看看当前 docker host 的网络拓扑结构。</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_str_2.jpg" alt="网络结构 @x60" /></p> 11837 </div> --> <div class="row content"> <ul id="markdown-toc"> <li><a href="#相关命令" id="markdown-toc-相关命令">相关命令</a></li> <li><a href="#none-和-host-网络的适用场景" id="markdown-toc-none-和-host-网络的适用场景">none 和 host 网络的适用场景</a> <ul> <li><a href="#none-网络" id="markdown-toc-none-网络">none 网络</a></li> <li><a href="#host-网络" id="markdown-toc-host-网络">host 网络</a></li> </ul> </li> <li><a href="#学容器必须懂-bridge-网络" id="markdown-toc-学容器必须懂-bridge-网络">学容器必须懂 bridge 网络</a></li> <li><a href="#自定义容器网络" id="markdown-toc-自定义容器网络">自定义容器网络</a></li> </ul> <h2 id="相关命令">相关命令</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">yum <span class="nb">install </span>bridge-utils
+
+brctl show
+docker network <span class="nb">ls
+
+</span>docker network create <span class="nt">--driver</span> bridge my_net
+
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>none busybox
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>host busybox
+
+docker network create <span class="nt">--driver</span> bridge <span class="nt">--subnet</span> 172.22.16.0/24 <span class="nt">--gateway</span> 172.22.16.1 my_net2
+
+docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--ip</span> 172.22.16.88 busybox
+
+docker pull httpd:2.2</code></pre></figure> <p>sequence</p> <ul> <li><code class="highlighter-rouge">docker run -it --network=host --name='hostbusy1' busybox</code></li> <li><code class="highlighter-rouge">docker run -it --name='d0busy1' busybox</code></li> <li><code class="highlighter-rouge">docker run -it --name='d0httpd1' httpd:2.2</code></li> </ul> <h2 id="none-和-host-网络的适用场景">none 和 host 网络的适用场景</h2> <ul> <li>Docker 提供的几种原生网络</li> <li>创建自定义网络</li> <li>容器之间通信</li> <li>容器与外界交互</li> </ul> <p>Docker 网络从覆盖范围可分为单个 host 上的容器网络和跨多个 host 的网络，本章重点讨论前一种。</p> <p>Docker 安装时会自动在 host 上创建三个网络，我们可用 docker network ls 命令查看：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network <span class="nb">ls
+</span>NETWORK ID          NAME                DRIVER              SCOPE
+2ac6093c3709        bridge              bridge              <span class="nb">local
+</span>5dc87272633f        host                host                <span class="nb">local
+</span>773b33d8d6e3        none                null                <span class="nb">local</span></code></pre></figure> <h3 id="none-网络">none 网络</h3> <p>故名思议，none 网络就是什么都没有的网络。挂在这个网络下的容器除了 <code class="highlighter-rouge">lo</code>，没有其他任何网卡。容器创建时，可以通过 <code class="highlighter-rouge">--network=none</code> 指定使用 none 网络。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>none busybox
+/ <span class="c"># ifconfig</span>
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1 
+          RX bytes:0 <span class="o">(</span>0.0 B<span class="o">)</span>  TX bytes:0 <span class="o">(</span>0.0 B<span class="o">)</span></code></pre></figure> <p>这样一个封闭的网络有什么用呢？</p> <p>其实还真有应用场景。封闭意味着隔离，一些对安全性要求高并且不需要联网的应用可以使用 none 网络。</p> <p>比如某个容器的唯一用途是生成随机密码，就可以放到 none 网络中避免密码被窃取。</p> <p>当然大部分容器是需要网络的，我们接着看 host 网络。</p> <h3 id="host-网络">host 网络</h3> <p>连接到 host 网络的容器共享 Docker host 的网络栈，容器的网络配置与 host 完全一样。可以通过 <code class="highlighter-rouge">--network=host</code> 指定使用 host 网络。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>host busybox
+/ <span class="c"># ip l</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast qlen 1000
+    <span class="nb">link</span>/ether 00:0c:29:78:58:74 brd ff:ff:ff:ff:ff:ff
+3: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:f9:2e:dc:f7 brd ff:ff:ff:ff:ff:ff
+17: veth4ba89ce@if16: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue master docker0 
+    <span class="nb">link</span>/ether da:69:0a:7b:a0:53 brd ff:ff:ff:ff:ff:ff</code></pre></figure> <p>在容器中可以看到 host 的所有网卡，并且连 <code class="highlighter-rouge">hostname</code> 也是 host 的。host 网络的使用场景又是什么呢？</p> <p>直接使用 Docker host 的网络最大的好处就是性能，如果容器对网络传输效率有较高要求，则可以选择 host 网络。当然不便之处就是牺牲一些灵活性，比如要考虑端口冲突问题，Docker host 上已经使用的端口就不能再用了。</p> <p>Docker host 的另一个用途是让容器可以直接配置 host 网路。比如某些跨 host 的网络解决方案，其本身也是以容器方式运行的，这些方案需要对网络进行配置，比如管理 iptables。</p> <h2 id="学容器必须懂-bridge-网络">学容器必须懂 bridge 网络</h2> <p>本节学习应用最广泛也是默认的 bridge 网络。</p> <p>Docker 安装时会创建一个 命名为 docker0 的 linux bridge。如果不指定<code class="highlighter-rouge">--network</code>，创建的容器默认都会挂到 docker0 上。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="o">[</span>root@dockerserver ~]# docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>host busybox
+/ <span class="c"># brctl show</span>
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+docker0   8000.0242f92edcf7 no    veth4ba89ce</code></pre></figure> <p>当前 docker0 上没有任何其他网络设备，我们创建一个容器看看有什么变化。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="o">[</span>root@dockerserver ~]# brctl show
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+docker0   8000.0242f92edcf7 no    veth4ba89ce</code></pre></figure> <p>一个新的网络接口 <code class="highlighter-rouge">veth4ba89ce</code> 被挂到了 <code class="highlighter-rouge">docker0</code> 上， <code class="highlighter-rouge">veth4ba89ce</code> 就是新创建容器的虚拟网卡。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell">yum <span class="nb">install </span>bridge-utils</code></pre></figure> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="c"># busybox</span>
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> 0397b68b16ee  /bin/sh
+<span class="c"># httpd</span>
+<span class="nv">$ </span>docker <span class="nb">exec</span> <span class="nt">-it</span> d0httpd1 bash
+root@0397b68b16ee:/usr/local/apache2# ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+20: eth0@if21: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default 
+    <span class="nb">link</span>/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff
+    inet 172.17.0.3/16 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe11:3/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>容器有一个网卡 eth0@if21。大家可能会问了，为什么不是 veth4ba89ce 呢？</p> <p>实际上 <code class="highlighter-rouge">eth0@if21</code> 和 <code class="highlighter-rouge">veth4ba89ce</code> 是一对 veth pair。veth pair 是一种成对出现的特殊网络设备，可以把它们想象成由一根虚拟网线连接起来的一对网卡，网卡的一头（eth0@if21）在容器中，另一头（veth4ba89ce）挂在网桥 docker0 上，其效果就是将 eth0@if21 也挂在了 docker0 上。</p> <p>我们还看到 eth0@if21 已经配置了 IP 172.17.0.3，为什么是这个网段呢？让我们通过 docker network inspect bridge 看一下 bridge 网络的配置信息:</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network inspect bridge
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"Name"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"Id"</span>: <span class="s2">"2ac6093c3709b3bd027129eb52aa4bc74f2e4e612f4050d2b493eb2926c8bf18"</span>,
+        <span class="s2">"Created"</span>: <span class="s2">"2017-06-30T05:20:41.715140335-04:00"</span>,
+        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
+        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
+        <span class="s2">"IPAM"</span>: <span class="o">{</span>
+            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
+            <span class="s2">"Options"</span>: null,
+            <span class="s2">"Config"</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">"Subnet"</span>: <span class="s2">"172.17.0.0/16"</span>,
+                    <span class="s2">"Gateway"</span>: <span class="s2">"172.17.0.1"</span>
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
+        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
+        <span class="s2">"Containers"</span>: <span class="o">{</span>
+            <span class="s2">"0397b68b16eed56f18cb53e22dfc8e453e6faf8ec056f3519c62e531baebc011"</span>: <span class="o">{</span>
+                <span class="s2">"Name"</span>: <span class="s2">"laughing_fermat"</span>,
+                <span class="s2">"EndpointID"</span>: <span class="s2">"0de8ef5773ff6d1edc44b91d5ccefdd43836d7a2aee090059b8d7bc59f1216a1"</span>,
+                <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:03"</span>,
+                <span class="s2">"IPv4Address"</span>: <span class="s2">"172.17.0.3/16"</span>,
+                <span class="s2">"IPv6Address"</span>: <span class="s2">""</span>
+            <span class="o">}</span>,
+            <span class="s2">"07d6759fa9fe372b64097c769121a31c0c8347a0670e3d327d0641e7472e083b"</span>: <span class="o">{</span>
+                <span class="s2">"Name"</span>: <span class="s2">"festive_kirch"</span>,
+                <span class="s2">"EndpointID"</span>: <span class="s2">"7ac97bfc80d6fd060b2dc6fb38f031767a97dcec3f573e76186b37903a484b4c"</span>,
+                <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:04"</span>,
+                <span class="s2">"IPv4Address"</span>: <span class="s2">"172.17.0.4/16"</span>,
+                <span class="s2">"IPv6Address"</span>: <span class="s2">""</span>
+            <span class="o">}</span>,
+            <span class="s2">"b305cc1b397d861bd39cf655b118b24b8d0f0125acccc825450af2be423c5d6b"</span>: <span class="o">{</span>
+                <span class="s2">"Name"</span>: <span class="s2">"objective_keller"</span>,
+                <span class="s2">"EndpointID"</span>: <span class="s2">"62f55799f8e1e1113e40057d320d69f381e81dcee054de6f74673530dc406d5b"</span>,
+                <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:02"</span>,
+                <span class="s2">"IPv4Address"</span>: <span class="s2">"172.17.0.2/16"</span>,
+                <span class="s2">"IPv6Address"</span>: <span class="s2">""</span>
+            <span class="o">}</span>
+        <span class="o">}</span>,
+        <span class="s2">"Options"</span>: <span class="o">{</span>
+            <span class="s2">"com.docker.network.bridge.default_bridge"</span>: <span class="s2">"true"</span>,
+            <span class="s2">"com.docker.network.bridge.enable_icc"</span>: <span class="s2">"true"</span>,
+            <span class="s2">"com.docker.network.bridge.enable_ip_masquerade"</span>: <span class="s2">"true"</span>,
+            <span class="s2">"com.docker.network.bridge.host_binding_ipv4"</span>: <span class="s2">"0.0.0.0"</span>,
+            <span class="s2">"com.docker.network.bridge.name"</span>: <span class="s2">"docker0"</span>,
+            <span class="s2">"com.docker.network.driver.mtu"</span>: <span class="s2">"1500"</span>
+        <span class="o">}</span>,
+        <span class="s2">"Labels"</span>: <span class="o">{}</span>
+    <span class="o">}</span>
+<span class="o">]</span></code></pre></figure> <p>原来 bridge 网络配置的 subnet 就是 172.17.0.0/16，并且网关是 172.17.0.1。这个网关在哪儿呢？大概你已经猜出来了，就是 docker0。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ifconfig docker0
+docker0: <span class="nv">flags</span><span class="o">=</span>4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 0.0.0.0
+        inet6 fe80::42:f9ff:fe2e:dcf7  prefixlen 64  scopeid 0x20&lt;<span class="nb">link</span><span class="o">&gt;</span>
+        ether 02:42:f9:2e:dc:f7  txqueuelen 0  <span class="o">(</span>Ethernet<span class="o">)</span>
+        RX packets 3797  bytes 72475492 <span class="o">(</span>69.1 MiB<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 7714  bytes 72806297 <span class="o">(</span>69.4 MiB<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</code></pre></figure> <p>当前容器网络拓扑结构如图所示：</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_str.jpg" alt="网络拓扑 @x60" /></p> <p>容器创建时，docker 会自动从 172.17.0.0/16 中分配一个 IP，这里 16 位的掩码保证有足够多的 IP 可以供容器使用。</p> <p>除了 none, host, bridge 这三个自动创建的网络，用户也可以根据业务需要创建 user-defined 网络。</p> <h2 id="自定义容器网络">自定义容器网络</h2> <p>除了 none, host, bridge 这三个自动创建的网络，用户也可以根据业务需要创建 user-defined 网络。 Docker 提供三种 user-defined 网络驱动：bridge, overlay 和 macvlan。overlay 和 macvlan 用于创建跨主机的网络，我们后面有章节单独讨论。</p> <p>可通过 bridge 驱动创建类似前面默认的 bridge 网络，例如：</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/self_defind_bridge.jpg" alt="自定义bridge @x100" /></p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network create <span class="nt">--driver</span> bridge my_net
+bb411a0ddf01733af862f574a7a7c4fa0ab9a3b321a36f281f14486b0a70e075</code></pre></figure> <p>查看一下当前 host 的网络结构变化：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>brctl show
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+br-bb411a0ddf01   8000.0242d8f01793 no    
+docker0   8000.0242f92edcf7 no    veth4ba89ce
+              veth846b10b
+              veth9d22376</code></pre></figure> <p>新增了一个网桥 br-bb411a0ddf01 ，这里 bb411a0ddf01 正好新建 bridge 网络 my_net 的短 id。执行 <code class="highlighter-rouge">docker network inspect</code> 查看一下 <code class="highlighter-rouge">my_net</code> 的配置信息：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network inspect my_net
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"Name"</span>: <span class="s2">"my_net"</span>,
+        <span class="s2">"Id"</span>: <span class="s2">"bb411a0ddf01733af862f574a7a7c4fa0ab9a3b321a36f281f14486b0a70e075"</span>,
+        <span class="s2">"Created"</span>: <span class="s2">"2017-06-30T12:05:17.870472472-04:00"</span>,
+        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
+        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
+        <span class="s2">"IPAM"</span>: <span class="o">{</span>
+            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
+            <span class="s2">"Options"</span>: <span class="o">{}</span>,
+            <span class="s2">"Config"</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">"Subnet"</span>: <span class="s2">"172.18.0.0/16"</span>,
+                    <span class="s2">"Gateway"</span>: <span class="s2">"172.18.0.1"</span>
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
+        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
+        <span class="s2">"Containers"</span>: <span class="o">{}</span>,
+        <span class="s2">"Options"</span>: <span class="o">{}</span>,
+        <span class="s2">"Labels"</span>: <span class="o">{}</span>
+    <span class="o">}</span>
+<span class="o">]</span></code></pre></figure> <p>这里 172.18.0.0/16 是 Docker 自动分配的 IP 网段。</p> <p>我们可以自己指定 IP 网段吗？ 答案是：可以。</p> <p>只需在创建网段时指定 <code class="highlighter-rouge">--subnet</code> 和 <code class="highlighter-rouge">--gateway</code> 参数：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker network create <span class="nt">--driver</span> bridge <span class="nt">--subnet</span> 172.22.16.0/24 <span class="nt">--gateway</span> 172.22.16.1 my_net2
+7d07ffb21af0ed4616286afca0a213addff1b69502428313cf8de31bc113c190
+
+<span class="nv">$ </span>docker network inspect my_net2
+<span class="o">[</span>
+    <span class="o">{</span>
+        <span class="s2">"Name"</span>: <span class="s2">"my_net2"</span>,
+        <span class="s2">"Id"</span>: <span class="s2">"7d07ffb21af0ed4616286afca0a213addff1b69502428313cf8de31bc113c190"</span>,
+        <span class="s2">"Created"</span>: <span class="s2">"2017-06-30T12:10:57.061502441-04:00"</span>,
+        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
+        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
+        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
+        <span class="s2">"IPAM"</span>: <span class="o">{</span>
+            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
+            <span class="s2">"Options"</span>: <span class="o">{}</span>,
+            <span class="s2">"Config"</span>: <span class="o">[</span>
+                <span class="o">{</span>
+                    <span class="s2">"Subnet"</span>: <span class="s2">"172.22.16.0/24"</span>,
+                    <span class="s2">"Gateway"</span>: <span class="s2">"172.22.16.1"</span>
+                <span class="o">}</span>
+            <span class="o">]</span>
+        <span class="o">}</span>,
+        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
+        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
+        <span class="s2">"Containers"</span>: <span class="o">{}</span>,
+        <span class="s2">"Options"</span>: <span class="o">{}</span>,
+        <span class="s2">"Labels"</span>: <span class="o">{}</span>
+    <span class="o">}</span>
+<span class="o">]</span>
+
+<span class="nv">$ </span>brctl show
+bridge name bridge <span class="nb">id   </span>STP enabled interfaces
+br-7d07ffb21af0   8000.0242031983bd no    
+br-bb411a0ddf01   8000.0242d8f01793 no    
+docker0   8000.0242f92edcf7 no    veth4ba89ce
+              veth846b10b
+              veth9d22376</code></pre></figure> <p>这里我们创建了新的 bridge 网络 my_net2，网段为 172.22.16.0/24，网关为 172.22.16.1。与前面一样，网关在 my_net2 对应的网桥 br-7d07ffb21af0 上：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>ifconfig br-7d07ffb21af0
+br-7d07ffb21af0: <span class="nv">flags</span><span class="o">=</span>4099&lt;UP,BROADCAST,MULTICAST&gt;  mtu 1500
+        inet 172.22.16.1  netmask 255.255.255.0  broadcast 0.0.0.0
+        ether 02:42:03:19:83:bd  txqueuelen 0  <span class="o">(</span>Ethernet<span class="o">)</span>
+        RX packets 0  bytes 0 <span class="o">(</span>0.0 B<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 <span class="o">(</span>0.0 B<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0</code></pre></figure> <p>容器要使用新的网络，需要在启动时通过 –network 指定：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 busybox
+/ <span class="c"># ip a</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+26: eth0@if27: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:ac:16:10:02 brd ff:ff:ff:ff:ff:ff
+    inet 172.22.16.2/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe16:1002/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever</code></pre></figure> <p>容器分配到的 IP 为 172.22.16.2。</p> <p>到目前为止，容器的 IP 都是 docker 自动从 subnet 中分配，我们能否指定一个静态 IP 呢？</p> <p>答案是：可以，通过<code class="highlighter-rouge">--ip</code>指定。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net2 <span class="nt">--ip</span> 172.22.16.88 busybox
+/ <span class="c"># ip a</span>
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1
+    <span class="nb">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+28: eth0@if29: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue 
+    <span class="nb">link</span>/ether 02:42:ac:16:10:58 brd ff:ff:ff:ff:ff:ff
+    inet 172.22.16.88/24 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::42:acff:fe16:1058/64 scope <span class="nb">link 
+       </span>valid_lft forever preferred_lft forever
+/ <span class="c"># </span></code></pre></figure> <blockquote> <p>注：只有使用 <code class="highlighter-rouge">--subnet</code> 创建的网络才能指定静态 IP。</p> </blockquote> <p>my_net 创建时没有指定 <code class="highlighter-rouge">--subnet</code>，如果指定静态 IP 报错如下：</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nv">$ </span>docker run <span class="nt">-it</span> <span class="nt">--network</span><span class="o">=</span>my_net <span class="nt">--ip</span> 172.22.16.88 busybox
+docker: Error response from daemon: User specified IP address is supported only when connecting to networks with user configured subnets.</code></pre></figure> <p>好了，我们来看看当前 docker host 的网络拓扑结构。</p> <p><img src="https://rhymeyang.github.io/assets/img/used/docker/net_str_2.jpg" alt="网络结构 @x60" /></p> <div class="col-sm-2 image pull-right"> <img class="avatar-img avata" style='border="0";border-radius: 50%' src="https://rhymeyang.github.io/assets/img/author/blog.svg" alt="" height="32px" width="32px"> </div> </div> <ul class="pager"> <li><a href="/docker_col/2017/08/06/docker-learn-11.html">Docker系列 11 实现容器的底层技术</a></li> <li><a href="/docker_col/2017/08/06/docker-learn-13.html">Docker系列 13 理解容器之间的连通性</a></li> </ul> </article> </div> </div> </div> <div class="footer"> <div class="container-fluid"> <div class="row-fluid"> <div class="col-sm-4 copyright"> <span>Vicky's Blog © 2018 • All right reserved.</span> </div> <div class="col-sm-4 message"> <span>Simplicity is fashionable.</span> </div> <div class="col-sm-4 madeby"> <span>Made with&nbsp;<a href="https://jekyllrb.com" target="_blank">Jekyll</a>&nbsp;by&nbsp;Vicky.</span> </div> <a class="pull-right top" href="#top"><i class="fa fa-caret-up" aria-hidden="true"></i></a> </div> </div> </div> </div> <!-- Vendor - Global | Applicable to every website --> <!-- #### VENDOR OFFLINE #### --> <script src="https://rhymeyang.github.io/assets/vendor-off/jquery/js/jquery.min.js"></script> <script src="https://rhymeyang.github.io/assets/vendor-off/bootstrap/js/bootstrap.min.js"></script> <script defer src="https://rhymeyang.github.io/assets/vendor-off/font-awesome/svg-with-js/js/fontawesome-all.min.js"></script> <script src="https://rhymeyang.github.io/assets/javascripts/jekyll-spotify-plugin.min.js"></script> <!-- Specific for each pages. --> <script type="text/javascript" src="https://rhymeyang.github.io/assets/javascripts/post.js"></script> <!-- Add 'ga' function from Google Analytics to certain site links in Posts --> <!-- App | Global --> <script src="https://rhymeyang.github.io/assets/javascripts/global.js"></script> </body> </html>

@@ -13,7 +13,7 @@
 SimpleJekyllSearch({
   searchInput: document.getElementById('search-input'),
   resultsContainer: document.getElementById('searchResult'),
-  json: 'https://rhymeyang.github.io/test/assets/json/search.json',
+  json: 'https://rhymeyang.github.io/assets/json/search.json',
   noResultsText:'',
   limit:10,
   fuzzy:!1

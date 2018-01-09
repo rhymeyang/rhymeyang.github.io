@@ -1,0 +1,90 @@
+
+
+
+    
+
+
+
+<!-- Include Data Base --> <!DOCTYPE html> <html lang="en" itemscope itemtype="http://schema.org/WebPage"> <head> <meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title>centos7分区 格式化挂载磁盘 | Vicky's Blog </title> <meta name=description content=""> <meta name="robots" content="index, follow"> <meta name=viewport content="width=device-width, initial-scale=1"> <meta http-equiv="cache-control" content="public"/> <meta http-equiv="pragma" content="public"> <meta name="keywords" content="Theme, Jekyll" /> <meta name="author" content="" /> <meta property="og:locale" content="en" /> <meta property="og:site_name" content="Vicky's Blog" /> <meta property="og:type" content="WebSite" /> <meta property="og:url" content="https://rhymeyang.github.io/general/2018/01/02/centos-fdisk.html" /> <meta property="og:description" content="" /> <meta property="og:title" content="centos7分区 格式化挂载磁盘 - Vicky's Blog" /> <link rel="canonical" href="https://rhymeyang.github.io/general/2018/01/02/centos-fdisk.html"> <link rel="alternate" type="application/rss+xml" title="Vicky's Blog" href="https://rhymeyang.github.io/feed.xml"> <script type="application/ld+json"> {"@context": "http://schema.org", "@type": "WebSite", "name": "", "headline": "Vicky's Blog", "author": {"@type": "Person", "name": {"Vicky's Blog"}}, "description": "", "url": "https://rhymeyang.github.io"} </script> <script type="text/javascript"> var GLOBAL_BASEURL = "https://rhymeyang.github.io"; </script> <link rel="icon" type="image/png" sizes="16x16" href="https://rhymeyang.github.io/assets/img/favicon/favicon-16x16.png"> <!-- #### VENDOR OFFLINE #### --> <!-- Bootstrap 3.3.6 - Offline --> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/bootstrap/css/bootstrap.min.css"> <!-- Font Awesome 5.03 - Offline --> <script defer src="https://rhymeyang.github.io/assets/vendor-off/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css"></script> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/fonts/space-mono/space-mono.min.css"> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/vendor-off/fonts/gloria-hallelujah/gloria-hallelujah.min.css"> <!-- Style Default --> <link rel="stylesheet" href="https://rhymeyang.github.io/assets/stylesheets/main.css"> <!-- Google Analytics --> </head> <body> <div class="main" id="top"> <div class="container wrapper"> <div class="row"> <div class="col-sm-3 sidebar"> <div class="row avatar"> <a href="https://rhymeyang.github.io/"> <img class="img-responsive center-block avatar-img" src="https://rhymeyang.github.io/assets/img/avatar/blog.svg" height="165" width="165" alt="Vicky's Blog"> </a> </div> <div class="row header"> <h2><a href="https://rhymeyang.github.io/">Vicky </a></h2> </div> <div class="row menu"> <ul> <li> <i class="fa fa-home" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/">Home</a> </li> <hr class="breakline"> <li class="li-folder-open"> <i style="font-size: ;" class="fas fa-folder-open"></i>&nbsp;<a class="unlink">Blog</a> </li> <li class="li-fa-edit"> <i style="font-size: ;" class="fas fa-edit" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/general/" >General</a> </li> <li class="li-fa-docker"> <i style="font-size: ;" class="fab fa-docker" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/docker_col/" >Docker</a> </li> <li class="li-fa-table"> <i style="font-size: ;" class="fas fa-table" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/data_analysis/" >Data Analysis</a> </li> <li class="li-fa-tags"> <i style="font-size: ;" class="fas fa-tags" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/blog/tags/" >Tags</a> </li> <li class="li-fa-briefcase"> <i style="font-size: ;" class="fas fa-briefcase" aria-hidden="true"></i>&nbsp;<a href="https://rhymeyang.github.io/blog/projects/" >Projects</a> </li> </ul> <div class="socials"> <div class="row"> <p></p> <p></p> </div> </div> </div> </div> <div class="col-sm-9 content-main"> <!-- Include Data Base --> <article class="post" itemscope itemtype="http://schema.org/BlogPosting"> <!-- Next Version <div class="readmode"> <a id="btn-readmode" class="pull-right btn btn-default btn-readmode" href="">Read Mode</a> </div> --> <div class="row title"> <h1>centos7分区 格式化挂载磁盘</h1> </div> <div class="row meta" datetime="2018-01-02"> <time class="col-sm-6 datetime"> <i class="fa fa-calendar" aria-hidden="true"></i> <span class="text tmargin ">January 02, 2018</span> </time> </div> <div class="row tag-list"> <i class="fa fa-tags" aria-hidden="true"></i> <a href="https://rhymeyang.github.io/blog/tags//环境配置">环境配置</a> <a href="https://rhymeyang.github.io/blog/tags//centos">centos</a> <a href="https://rhymeyang.github.io/blog/tags//linux">linux</a> </div> <!-- <div class="row"> <ul id="markdown-toc"> <li><a href="#列出所有的硬盘" id="markdown-toc-列出所有的硬盘">列出所有的硬盘</a></li> <li><a href="#执行分区" id="markdown-toc-执行分区">执行分区</a></li> <li><a href="#挂载磁盘" id="markdown-toc-挂载磁盘">挂载磁盘</a></li> </ul> <p>安装centos时，通常linux系统分区默认为3个分区，主分区最多4个，其他可根据自己的需要挂载。</p> <ul> <li>/ 根分区，通常10-100G左右（根据总磁盘大小情况）</li> <li>/boot 系统操作分区 （100-500MB 足矣）</li> <li>/swap 虚拟内存暂存分区（通常是内存的2倍）</li> </ul> <p>如果有剩下的磁盘就保留，后期再挂载。安装完系统后就开始格式化剩下的分区，并挂载指派出来。</p> <h2 id="列出所有的硬盘">列出所有的硬盘</h2> <p>分别是/dev/sda和/dev/sdb，sda是系统分区，sdb是存储数据分区。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">sudo </span>fdisk <span class="nt">-l</span></code></pre></figure> <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+
+磁盘 /dev/sda：32.2 GB, 32212254720 字节，62914560 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+磁盘标签类型：dos
+磁盘标识符：0x0009ab4c
+
+   设备 Boot      Start         End      Blocks   Id  System
+/dev/sda1   *        2048     2099199     1048576   83  Linux
+/dev/sda2         2099200    62914559    30407680   8e  Linux LVM
+
+磁盘 /dev/mapper/cl-root：29.0 GB, 28982640640 字节，56606720 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+
+磁盘 /dev/mapper/cl-swap：2147 MB, 2147483648 字节，4194304 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+</code></pre></div></div> <p>可以看到20G的数据磁盘 sdb</p> <h2 id="执行分区">执行分区</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">sudo </span>fdisk <span class="nt">-S</span> 56 /dev/sdb
+
+<span class="nb">sudo </span>fdisk <span class="nt">-l</span>
+
+<span class="c"># 格式化分区</span>
+<span class="c"># mkfs.ext3 /dev/sdb</span>
+<span class="c"># mkfs.ext4 /dev/sdb</span>
+mkfs.xfs <span class="nt">-f</span> /dev/sdb</code></pre></figure> <h2 id="挂载磁盘">挂载磁盘</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">sudo echo</span> <span class="s1">'/dev/sdb /www xfs defaults 0 0'</span> <span class="o">&gt;&gt;</span> /etc/fstab
+
+<span class="c"># 新建挂载目录</span>
+<span class="nb">mkdir</span> /www 
+
+<span class="c"># 挂载磁盘</span>
+mount <span class="nt">-a</span>
+
+<span class="c"># 查看挂载是否成功</span>
+<span class="nb">df</span> <span class="nt">-h</span></code></pre></figure> <blockquote> <p>直接挂载: <code class="highlighter-rouge">mount /dev/sdb /www</code></p> </blockquote> 1305 </div> --> <div class="row content"> <ul id="markdown-toc"> <li><a href="#列出所有的硬盘" id="markdown-toc-列出所有的硬盘">列出所有的硬盘</a></li> <li><a href="#执行分区" id="markdown-toc-执行分区">执行分区</a></li> <li><a href="#挂载磁盘" id="markdown-toc-挂载磁盘">挂载磁盘</a></li> </ul> <p>安装centos时，通常linux系统分区默认为3个分区，主分区最多4个，其他可根据自己的需要挂载。</p> <ul> <li>/ 根分区，通常10-100G左右（根据总磁盘大小情况）</li> <li>/boot 系统操作分区 （100-500MB 足矣）</li> <li>/swap 虚拟内存暂存分区（通常是内存的2倍）</li> </ul> <p>如果有剩下的磁盘就保留，后期再挂载。安装完系统后就开始格式化剩下的分区，并挂载指派出来。</p> <h2 id="列出所有的硬盘">列出所有的硬盘</h2> <p>分别是/dev/sda和/dev/sdb，sda是系统分区，sdb是存储数据分区。</p> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">sudo </span>fdisk <span class="nt">-l</span></code></pre></figure> <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>磁盘 /dev/sdb：21.5 GB, 21474836480 字节，41943040 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+
+磁盘 /dev/sda：32.2 GB, 32212254720 字节，62914560 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+磁盘标签类型：dos
+磁盘标识符：0x0009ab4c
+
+   设备 Boot      Start         End      Blocks   Id  System
+/dev/sda1   *        2048     2099199     1048576   83  Linux
+/dev/sda2         2099200    62914559    30407680   8e  Linux LVM
+
+磁盘 /dev/mapper/cl-root：29.0 GB, 28982640640 字节，56606720 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+
+磁盘 /dev/mapper/cl-swap：2147 MB, 2147483648 字节，4194304 个扇区
+Units = 扇区 of 1 * 512 = 512 bytes
+扇区大小(逻辑/物理)：512 字节 / 512 字节
+I/O 大小(最小/最佳)：512 字节 / 512 字节
+</code></pre></div></div> <p>可以看到20G的数据磁盘 sdb</p> <h2 id="执行分区">执行分区</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">sudo </span>fdisk <span class="nt">-S</span> 56 /dev/sdb
+
+<span class="nb">sudo </span>fdisk <span class="nt">-l</span>
+
+<span class="c"># 格式化分区</span>
+<span class="c"># mkfs.ext3 /dev/sdb</span>
+<span class="c"># mkfs.ext4 /dev/sdb</span>
+mkfs.xfs <span class="nt">-f</span> /dev/sdb</code></pre></figure> <h2 id="挂载磁盘">挂载磁盘</h2> <figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">sudo echo</span> <span class="s1">'/dev/sdb /www xfs defaults 0 0'</span> <span class="o">&gt;&gt;</span> /etc/fstab
+
+<span class="c"># 新建挂载目录</span>
+<span class="nb">mkdir</span> /www 
+
+<span class="c"># 挂载磁盘</span>
+mount <span class="nt">-a</span>
+
+<span class="c"># 查看挂载是否成功</span>
+<span class="nb">df</span> <span class="nt">-h</span></code></pre></figure> <blockquote> <p>直接挂载: <code class="highlighter-rouge">mount /dev/sdb /www</code></p> </blockquote> <div class="col-sm-2 image pull-right"> <img class="avatar-img avata" style='border="0";border-radius: 50%' src="https://rhymeyang.github.io/assets/img/author/blog.svg" alt="" height="32px" width="32px"> </div> </div> <ul class="pager"> <li><a href="/general/2018/01/01/git.html">git 常用命令</a></li> <li><a href="/general/2018/01/05/docker-req.html">Docker 常用操作</a></li> </ul> </article> </div> </div> </div> <div class="footer"> <div class="container-fluid"> <div class="row-fluid"> <div class="col-sm-4 copyright"> <span>Vicky's Blog © 2018 • All right reserved.</span> </div> <div class="col-sm-4 message"> <span>Simplicity is fashionable.</span> </div> <div class="col-sm-4 madeby"> <span>Made with&nbsp;<a href="https://jekyllrb.com" target="_blank">Jekyll</a>&nbsp;by&nbsp;Vicky.</span> </div> <a class="pull-right top" href="#top"><i class="fa fa-caret-up" aria-hidden="true"></i></a> </div> </div> </div> </div> <!-- Vendor - Global | Applicable to every website --> <!-- #### VENDOR OFFLINE #### --> <script src="https://rhymeyang.github.io/assets/vendor-off/jquery/js/jquery.min.js"></script> <script src="https://rhymeyang.github.io/assets/vendor-off/bootstrap/js/bootstrap.min.js"></script> <script defer src="https://rhymeyang.github.io/assets/vendor-off/font-awesome/svg-with-js/js/fontawesome-all.min.js"></script> <script src="https://rhymeyang.github.io/assets/javascripts/jekyll-spotify-plugin.min.js"></script> <!-- Specific for each pages. --> <script type="text/javascript" src="https://rhymeyang.github.io/assets/javascripts/post.js"></script> <!-- Add 'ga' function from Google Analytics to certain site links in Posts --> <!-- App | Global --> <script src="https://rhymeyang.github.io/assets/javascripts/global.js"></script> </body> </html>

@@ -24,7 +24,7 @@ url: "https://rhymeyang.github.io"
 github_username:  rhymeyang
 
 
-# Settings for the plugins in the _plugins folder.
+# Settings for the plugins in the _plugins_dir folder.
 plugins_dir:
   imager:
     dir_posts: assets/img/posts

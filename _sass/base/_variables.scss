@@ -5,38 +5,14 @@ $background-featured-enable: true;
 $border-dashed: true;
 
 /* Title for TOC */
-$title-toc: "Índice";
+$title-toc: "Index";
 
 /* Variables Colors Screen */
 
 /* Theme:  Pergamin - Default*/
-$background-color: #f3e8ba;
-$background-featured: #f3e8ba;
-$avatar-background-color: #FFF;
-$content-background-color: #FFFFF2;
-$sidebar-background-color: #F4F4F4;
-$footer-background-color: #FFF8F8;
-$footer-border-color: #E8E8E8;
-$blockquote-background: rgba(209, 209, 209, 0.4) !important;
-$links-title-weight: 800;
-$color-links: #D7101E;
-$color: #000000;
-$highlight-color: inherit;
-$highlight-background-color: #DFDFDF;
-$highlight-border-color: #E8E8E8;
-$border-dashed-color: #ACACAC;
-$table-head-background-color: #BEBEBE;
-$table-head-border-color: #FFF;
-$table-body-background-color: #D6D6D6;
-$table-body-border-color: #FFF;
-$contact-boxs-background-color: #FFF;
-$contact-boxs-color: #181818;
-$contact-button-submit-color: #FFF;
-
-/* Theme: Light */
-// $background-color: #FFFFF2;
-// $background-featured: #EEEEEE;
-// $avatar-background-color: #FFFFF2;
+// $background-color: #f3e8ba;
+// $background-featured: #f3e8ba;
+// $avatar-background-color: #FFF;
 // $content-background-color: #FFFFF2;
 // $sidebar-background-color: #F4F4F4;
 // $footer-background-color: #FFF8F8;
@@ -56,6 +32,30 @@ $contact-button-submit-color: #FFF;
 // $contact-boxs-background-color: #FFF;
 // $contact-boxs-color: #181818;
 // $contact-button-submit-color: #FFF;
+
+/* Theme: Light */
+$background-color: #FFFFF2;
+$background-featured: #EEEEEE;
+$avatar-background-color: #FFFFF2;
+$content-background-color: #FFFFF2;
+$sidebar-background-color: #F4F4F4;
+$footer-background-color: #FFF8F8;
+$footer-border-color: #E8E8E8;
+$blockquote-background: rgba(209, 209, 209, 0.4) !important;
+$links-title-weight: 800;
+$color-links: #D7101E;
+$color: #000000;
+$highlight-color: inherit;
+$highlight-background-color: #DFDFDF;
+$highlight-border-color: #E8E8E8;
+$border-dashed-color: #ACACAC;
+$table-head-background-color: #BEBEBE;
+$table-head-border-color: #FFF;
+$table-body-background-color: #D6D6D6;
+$table-body-border-color: #FFF;
+$contact-boxs-background-color: #FFF;
+$contact-boxs-color: #181818;
+$contact-button-submit-color: #FFF;
 
 /* Theme: Darkness Blood */
 // $background-color: #151515;

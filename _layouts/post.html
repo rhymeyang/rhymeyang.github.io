@@ -19,6 +19,7 @@ layout: default
       {% endif %}
       <span class="text {% if site.screen.icons.enable == true %} tmargin {% endif %}">{{ page.date | date: '%B %d, %Y' }}</span>
     </time>
+    
   </div>
   <div class="row tag-list">
     {% if site.screen.icons.enable == true %}<i class="fa fa-tags" aria-hidden="true"></i>{% else %}Tags: {% endif %}
@@ -26,32 +27,15 @@ layout: default
       <a href="{{ '/blog/tags/' | prepend: site.baseurl | prepend: site.url }}/{{ tag }}">{{ tag }}</a>
     {% endfor %}
   </div>
-  <div class="row">
+<!--   <div class="row">
     {{ page.content | reading_time }}
-  </div>
+    {{page.content | strip_html | strip_newlines | split: "" | size}}
+  </div> -->
   <div class="row content">
     {{ content }}
-    {% include pieces/share_social.html %}
-
-    <div class="day-quote">
-      <div class="title">
-        {{ page.day_quote.title }}
-      </div>
-      <div class="content">
-        {{ page.day_quote.content }}
-      </div>
+    <div class="col-sm-2 image pull-right"> 
+        <img class="avatar-img avata" style='border="0";border-radius: {{ site.avatar.border.radius }}%' src="{{ '/assets/img/author' | prepend: site.baseurl | prepend: site.url }}/{{ dbase.website.author.image }}" alt="" height="32px" width="32px">
     </div>
-    <div class="row author">
-      <div class="col-sm-2 image">
-        <img class="img-responsive center-block" src="{{ '/assets/img/author' | prepend: site.baseurl | prepend: site.url }}/{{ dbase.website.author.image }}" alt="">
-      </div>
-      <div class="col-sm-10 bio">
-        <p class="title">{{ dbase.website.strings.post.author.title }}</p>
-        <p class="name">{{ dbase.website.strings.post.author.name }}</p>
-        <p class="content">{{ dbase.website.strings.post.author.bio }}</p>
-      </div>
-    </div>
-
-
+    
   </div>
 </article>

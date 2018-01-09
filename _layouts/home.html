@@ -16,11 +16,7 @@ layout: compress
         <div class="row">
           {% include pieces/sidebar.html %}
           <div class="col-sm-9 content-main">
-              {% if page.url == '/' %}
-                {% include pieces/hello.html %}
-              {% else %}
-                {{ content }}
-              {% endif %}
+                {% include pieces/hello.html %}              
           </div>
         </div>
       </div>

@@ -71,7 +71,7 @@ function _refresh_site_dir(){
 
 function _deploy_site(){
   
-  if [[ $isCompile == "yes" ]]; then
+  if [[ $isCompile=="yes" ]]; then
     cd ${workDir}
     _refresh_site_dir
 
@@ -83,9 +83,15 @@ function _deploy_site(){
 
   cd ${siteDir}
   git add -A .
-  git diff
-  git  commit -m "$commit - $(date)"
-  git push origin -u ${branchSite}
+  
+  if [[ ${siteSave}=='no' ]]; then
+      git commit --amend -m "$commit - $(date)"
+      git push -f  origin -u ${branchSite}
+  else:
+      git commit -m "$commit - $(date)"
+      git push origin -u ${branchSite}
+  fi
+
   msg_finish "Done!"
 }
 
@@ -141,6 +147,6 @@ case $1 in
         _deploy_site
         ;;
     *|help)
-     msg_warning "Usage: $0 { install | install:update | build | build:clean | serve | reset }"
+     msg_warning "Usage: $0 { install | install:update | build | build:clean | deploy:site| serve | reset }"
   ;;
 esac

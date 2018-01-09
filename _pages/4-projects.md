@@ -25,12 +25,7 @@ permalink: /blog/projects/
 
 If you wanted to know about my favorite chores, this is the correct page. You find my designs of my own, or participation.
 
-##  Major collaborations
 
-**[Typing Theme](https://github.com/williamcanin/typing-theme)**: Creating themes for Jekyll   
+## Data Analytics
 
-
-|[Typing Jekyll Template](https://github.com/williamcanin/typing-jekyll-template){:target="_blank"} <i class="fa fa-external-link"></i>|
---------------------------|----------------------------
-| **Status**: <label style="color:green;">Active</label> |
-| **Description**: Typing, is a template for Jekyll built especially for those who want to have a blog and pages quickly and lightly. |
++ [StreetMap](https://github.com/rhymeyang/StreetMap)

@@ -1,6 +1,6 @@
 ---
 layout: list_tags
-title: 标签
+title: Tags
 
 # Enable / Disable events Google Analytics for this link page.
 ga_event: false

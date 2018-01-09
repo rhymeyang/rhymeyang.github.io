@@ -8,9 +8,11 @@ layout: default
     <h1>{{ page.title }}</h1>
     <p>{{ content }}</p>
   </div>
-  <div class="row content">
-   {% for tag in site.tags %}
-    <span class="label label-default cloud"><a href="{{ '/blog/tags/' | prepend: site.baseurl | prepend: site.url }}/{{ tag[0] }}">{{ tag[0] }}</a></span>
+  <div class="row content tags-this">
+    {% assign sorted_tags = site.tags | sort %}
+    {% for tag in sorted_tags %}
+    <span class="label label-default cloud">
+      <a href="{{ '/blog/tags/' | prepend: site.baseurl | prepend: site.url }}{{ tag[0] }}/">{{ tag[0] }}</a></span>
    {% endfor %}
   </div>
 </div>

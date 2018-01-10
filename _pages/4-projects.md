@@ -9,8 +9,9 @@ sitemap:
 # Enable / Disable events Google Analytics for this link page.
 ga_event: true
 
-# Icon feature uses Font Awesome
-icon: fa-briefcase
+# Icon feature uses Font Awesome, must at least 2 items
+# the first two items sequance can not change
+icon: ['fas', 'fa-briefcase']
 
 # Enable / Disable this page in the main menu.
 menu: true

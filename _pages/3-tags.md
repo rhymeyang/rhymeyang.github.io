@@ -5,8 +5,9 @@ title: Tags
 # Enable / Disable events Google Analytics for this link page.
 ga_event: false
 
-# Icon feature uses Font Awesome
-icon: fa-tags
+# Icon feature uses Font Awesome, must at least 2 items
+# the first two items sequance can not change
+icon: ['fas', 'fa-tags'] 
 
 # Enable / Disable this page in the main menu.
 menu: true

@@ -17,8 +17,8 @@
       <hr class="breakline">
       {% for page in site.pages %}
         {% if page.title and page.menu == true %}
-          <li class="li-{{ page.icon }}">
-            {% if page.icon and site.screen.icons.enable == true %}<i style="font-size: {{ page.icon-size }};" class="fa {{ page.icon }}" aria-hidden="true"></i>&nbsp;{% endif %}<a href="{{ site.url }}{{ site.baseurl }}{{ page.url }}" {% if page.ga_event == true and dbase.website.google.analytics.events == true %} onclick="ga('send', 'event', 'linkTo', '{{ site.url }}{{ site.baseurl }}{{ page.url }}', '{{ page.title }}');" {% endif %}>{{ page.title }}</a>
+          <li class="li-{{ page.icon[1] }}">
+            {% if page.icon and site.screen.icons.enable == true %}<i style="font-size: {{ page.icon-size }};" class="{%for icon in page.icon%} {{icon}} {% endfor %}" aria-hidden="true"></i>&nbsp;{% endif %}<a href="{{ site.url }}{{ site.baseurl }}{{ page.url }}" {% if page.ga_event == true and dbase.website.google.analytics.events == true %} onclick="ga('send', 'event', 'linkTo', '{{ site.url }}{{ site.baseurl }}{{ page.url }}', '{{ page.title }}');" {% endif %}>{{ page.title }}</a>
           </li>
         {% endif %}
       {% endfor %}

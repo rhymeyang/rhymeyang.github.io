@@ -5,11 +5,20 @@ layout: default
 <!-- Include Data Base  -->
 {% include dbase/dbase %}
 
-{% for post in site.categories.blog %}
+<!-- --{{site.paginator.total_posts}} -->
+
+{% assign pagdirlist = page.permalink|split: '/' %}
+
+{% if pagdirlist[0] == '' %}
+{% assign pagdirlist = pagdirlist|shift %}
+{% endif %}
+
+{% assign pageDir = pagdirlist | join: '/' %}
+
+{% for post in site.categories[pageDir] %}
   {% capture post_count %} {{ post_count | plus: 1 }} {% endcapture %}
 {% endfor %}
 
---{{site.paginator.total_posts}}
 
 <div class="postlist" itemscope="itemscope" itemtype="http://schema.org/Blog">
   <div class="row title-description">
@@ -19,15 +28,12 @@ layout: default
   {% if page.buttons == true %}
   <div class="row meta">
     <div class="col-sm-6">
-      <a href="{{ site.url }}{{ site.baseurl }}/blog/tags/">Tags Cloud</a>
-    </div>
-    <div class="col-sm-6">
-      <a href="{{ site.url }}{{ site.baseurl }}/blog/search/">Search</a>
+      <a href="{{ site.url }}{{ site.baseurl }}/{{pageDir}}/tags/">Tags Cloud</a>
     </div>
   </div>
   {% endif %}
   <div class="row content">
-    {% for post in site.categories.blog %}
+    {% for post in site.categories[pageDir] %}
     <div class="wrap">
       <div class="time-and-count-comments" datetime="{{ post.date | date:'%Y-%m-%d' }}">        
        <time class="time">

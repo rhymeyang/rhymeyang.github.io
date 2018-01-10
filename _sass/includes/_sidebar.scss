@@ -68,6 +68,12 @@
           text-decoration: underline;
           font-weight: $links-title-weight;
         }
+        a.unlink{
+          font-size: 1.9rem;
+          color: $color;
+          text-decoration: none;
+          font-weight: $links-title-weight;
+        }
       }
       .breakline{
         display: block;
@@ -95,5 +101,12 @@
       }
     }
     */
+
+    .li-fa-edit, .li-fa-docker{
+      @media (min-width: 768px) {
+        padding-left: 15px;
+      }
+    }
+    
   }
 }

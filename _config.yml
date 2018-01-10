@@ -41,7 +41,7 @@ host: localhost
 # Using: true | false
 vendor-off: true
 
-include: ['_pages','_blog', '_docker_col']
+include: ['_pages','_general', '_docker_col']
 # Build settings
 markdown: kramdown
 # permalink: /blog/:title/
@@ -53,11 +53,11 @@ markdown: kramdown
 plugins_dir:
   - jekyll-feed
 
-collections:
-  docker_col:
-    output: true
-    paginate: 5
-    paginate_path: "blog/page:num"
+# collections:
+#   docker_col:
+#     output: true
+#     paginate: 5
+#     paginate_path: "docker_col/page:num"
 
 
 # Config SASS

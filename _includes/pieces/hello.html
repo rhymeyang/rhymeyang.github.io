@@ -1,7 +1,9 @@
 <!-- Include Data Base  -->
 {% include dbase/dbase %}
 
-{% for post in site.categories.blog %}
+{% assign allpost = site.categories.general | concat: site.categories.general  %}
+
+{% for post in  allpost %}
   {% capture post_count %} {{ post_count | plus: 1 }} {% endcapture %}
 {% endfor %}
 
@@ -9,22 +11,22 @@
 <div class="postlist" itemscope="itemscope" itemtype="http://schema.org/Blog">
   <div class="row title-description">
     <!-- <h1>{{ page.title }}</h1> -->
-    <p>{{ page.msg_qtd[0] }} <strong>{{ post_count }}</strong> {{ page.msg_qtd[1] }} {{ content }} </p>
+    <!-- <p>{{ page.msg_qtd[0] }} <strong>{{ post_count }}</strong> {{ page.msg_qtd[1] }} {{ content }} </p> -->
 
-    <!-- <p>There are <strong>{{ post_count }}</strong> posts in total. {{ content }} </p> -->
+    <p>There are <strong>{{ post_count }}</strong> posts in total. {{ content }} </p>
   </div>
   {% if page.buttons == true %}
   <div class="row meta">
     <div class="col-sm-6">
-      <a href="{{ site.url }}{{ site.baseurl }}/blog/tags/">Tags Cloud</a>
+      <a href="{{ site.url }}{{ site.baseurl }}/general/tags/">Tags Cloud</a>
     </div>
-    <div class="col-sm-6">
-      <a href="{{ site.url }}{{ site.baseurl }}/blog/search/">Search</a>
-    </div>
+    <!-- <div class="col-sm-6">
+      <a href="{{ site.url }}{{ site.baseurl }}/general/search/">Search</a>
+    </div> -->
   </div>
   {% endif %}
   <div class="row content">
-    {% for post in site.categories.blog %}
+    {% for post in allpost limit:{{dbase.homepage.itemnum}}%}
     <div class="wrap">
       <div class="time-and-count-comments" datetime="{{ post.date | date:'%Y-%m-%d' }}">        
        <time class="time">

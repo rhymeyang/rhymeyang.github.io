@@ -87,7 +87,7 @@ function _deploy_site(){
   if [[ ${siteSave}=='no' ]]; then
       git commit --amend -m "$commit - $(date)"
       git push -f -u origin ${branchSite}
-  else:
+  else
       git commit -m "$commit - $(date)"
       git push origin -u ${branchSite}
   fi

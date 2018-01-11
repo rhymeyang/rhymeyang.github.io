@@ -18,7 +18,7 @@ menu: true
 published: true
 
 # Does not change and does not remove 'script' variables
-script: [ postlist.js]
+script: [paginater.js]
 
 listdir: [docker_col]
 permalink: /docker_col/

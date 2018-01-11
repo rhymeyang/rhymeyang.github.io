@@ -20,6 +20,9 @@
   <script type="text/javascript" src="{{ '/assets/javascripts/hello.js' | prepend: site.baseurl | prepend: site.url }}"></script>
 {% endif %}
 
+{% if page.url contains site.tag_page_dir %}
+  <script type="text/javascript" src="{{ '/assets/javascripts/paginater.js' | prepend: site.baseurl | prepend: site.url }}"></script>
+{% endif %}
 <!-- Add 'ga' function from Google Analytics to certain site links in Posts  -->
 {% if dbase.website.google.analytics.events == true %}
 <script type="text/javascript">

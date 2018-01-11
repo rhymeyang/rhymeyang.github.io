@@ -1,9 +1,17 @@
 ---
 layout: default
+script: [paginater.js]
 ---
 
 <!-- Include Data Base  -->
 {% include dbase/dbase %}
+
+{% assign post_count = page.posts|size %}
+{% if post_count > dbase.website.paginate %}
+  {% assign page_num = post_count | plus: 0.0 | divided_by: dbase.website.paginate |ceil %}
+{% else %}
+  {% assign page_num = 1 %}
+{% endif %}
 
 <div class="tag-page">
   <div class="row title">
@@ -13,7 +21,13 @@ layout: default
     <h3>Posts</h3>
     <div class="list-post">
       {% for post in page.posts %}
-        <div class="wrap">
+        {% if page_num >1 %}
+          {% capture current_index %} {{ current_index | plus: 1 }} {% endcapture %}
+          {% assign current_page = current_index | plus: 0.0 | divided_by: dbase.website.paginate | ceil%}
+          <div class="wrap page{{current_page}} {% if current_page > 1 %} hide{% endif %}" >
+        {% else %}
+          <div class="wrap">
+        {% endif %}
           <div class="meta-list">
             <div class="col-sm-6 datetime">
               <span>
@@ -33,3 +47,23 @@ layout: default
     </div>
   </div>
 </div>
+
+{% if page_num >1 %}
+
+
+
+<nav aria-label="Page navigation" class="pagination">
+  <ul class="pagination">
+    <li class="page-item" id ='firstpage'><a class="page-link">First</a></li>
+    <li class="page-item" id='pagepre'><a class="page-link" href="#">&lt;&lt;</a></li>
+    <li class="page-item" id='pageafter'><a class="page-link" href="#">&gt;&gt;</a></li>
+    <li class="page-item" id ='lastpage'><a class="page-link" href="#">Last</a></li>
+  </ul>
+  <ul class="page">
+    <li class="curpage"><a>Page: <i id='curpage' pagemax='{{page_num}}'>1</i></a></li>
+  </ul>
+  
+</nav>
+
+{% endif %}
+

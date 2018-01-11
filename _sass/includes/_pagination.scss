@@ -3,6 +3,12 @@ nav.pagination{
     width: 100%;
     align-content: center;
   ul.pagination{
+    @media (max-width: 500px) {
+      padding-left: 2%;
+      // clear:both;
+      float: left;
+      width:auto;
+    }
     padding-left: 30%;
     width:80%;
     float: left;
@@ -15,6 +21,17 @@ nav.pagination{
     }
   }
   ul.page{
+    @media (max-width: 500px) {
+      // clear:both;
+      float: right;
+      width:auto;
+      align-content: center;
+      li{
+        a{
+            font-size: 1.2rem;
+        }
+      }
+    }
     float: left;
     width:20%;
     li{    
@@ -24,8 +41,7 @@ nav.pagination{
             color: $color;
             text-decoration: none;
         }
-        
-  }
+      }
   }
   
 }

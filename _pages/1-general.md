@@ -1,6 +1,6 @@
 ---
 layout: postlist
-title: Blog
+title: General
 
 # Enable / Disable events Google Analytics for this link page.
 ga_event: false
@@ -23,7 +23,8 @@ published: true
 # Does not change and does not remove 'script' variables
 script: [postlist.js]
 
-permalink: /blog/
+listdir: [general]
+permalink: /general/
+
 ---
 
-What follows is a list of weblog posts from as early as {{ site.debutyear }}. I hope you enjoy

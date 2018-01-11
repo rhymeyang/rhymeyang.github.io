@@ -41,7 +41,7 @@ function __clean_site_dir(){
     for checkFile in ${keepArray[@]}
     do
         allFiles=$(echo ${allFiles}| 
-            # sed  -e "s/[^| ]${checkFile}[ |$]/ /g"  |
+            # sed  -e "s/[^ ]${checkFile}[ $]/ /g"  |
             sed  -e "s/ ${checkFile} / /g"  |
             sed  -e "s/^${checkFile}[ |$]/ /g" |
             sed  -e "s/ ${checkFile}$/ /g")
@@ -126,6 +126,13 @@ case $1 in
         rm -rf ".sass-cache"
         bundle exec jekyll b
         bundle exec jekyll s
+        msg_finish "Done!"
+        ;;
+    build:trace )
+        msg_header "Will clean last build. Wait ..."
+        _rm_site_dir
+        rm -rf ".sass-cache"
+        bundle exec jekyll b --trace        
         msg_finish "Done!"
         ;;
     build:watch )

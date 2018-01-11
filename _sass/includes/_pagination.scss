@@ -32,10 +32,10 @@ nav.pagination{
 
 .postlist{
     div.content{
-        div.wrap{
+        div.wrap.hide{
             display: none;
         }
-        div.wrap.show{
+        div.wrap{
             display: inherit;
         }
     }

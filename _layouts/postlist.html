@@ -7,15 +7,22 @@ layout: default
 
 <!-- --{{site.paginator.total_posts}} -->
 
-{% assign pagdirlist = page.permalink|split: '/' %}
+{% assign dir_num = page.listdir|size %}
+{% assign first_dir = page.listdir[0] %}
+{% assign allpost = site.categories[first_dir] %}
 
-{% if pagdirlist[0] == '' %}
-{% assign pagdirlist = pagdirlist|shift %}
+{% if dir_num > 1 %}
+  {% assign max_dir_num = dir_num|minus:1 %}
+  {% for i in (1..max_dir_num) %}
+    {% assign dir_i = page.listdir[i] %}
+    {% assign allpost = allpost| concat:site.categories[dir_i] %}
+  }
+  }
+  {% endfor %}
 {% endif %}
 
-{% assign pageDir = pagdirlist | join: '/' %}
 
-{% assign post_count = site.categories[pageDir] | size %}
+{% assign post_count = allpost | size %}
 
 {% if post_count > dbase.website.paginate %}
 {% assign page_num = post_count | plus: 0.0 | divided_by: dbase.website.paginate |ceil %}
@@ -24,6 +31,7 @@ layout: default
 {% endif %}
 
 <div class="postlist" itemscope="itemscope" itemtype="http://schema.org/Blog">
+  
   <div class="row title-description">
     <h1>{{ page.title }}</h1>
     <p>{{ page.msg_qtd[0] }} <strong>{{ post_count }}</strong> {{ page.msg_qtd[1] }} {{ content }} </p>
@@ -36,12 +44,13 @@ layout: default
   </div>
   {% endif %}
   <div class="row content" {% if page_num >1 %} cur_page="1"{% endif %}>    
-    {% for post in site.categories[pageDir] %}
+    {% for post in allpost %}
     
     {% if page_num >1 %}
       {% capture current_index %} {{ current_index | plus: 1 }} {% endcapture %}
       {% assign current_page = current_index | plus: 0.0 | divided_by: dbase.website.paginate | ceil%}
-    <div class="wrap page{{current_page}} {% if current_page == 1 %} show{% endif %}" >
+      
+    <div class="wrap page{{current_page}} {% if current_page > 1 %} hide{% endif %}" >
     {% else %}
     <div class="wrap" >
     {% endif %}

@@ -31,11 +31,11 @@ jQuery(document).ready(function() {
 
         function set_page(page_num){
             if(page_num<1 | page_num > page_array.length){return;}
-            $(`.page${page_num}`).addClass('show');
+            $(`.page${page_num}`).removeClass('hide');
             $('#curpage').text(page_num);
             for (let page_index of page_array){
                 if (page_index === `page${page_num}`){continue;}
-                $(`.${page_index}`).removeClass('show');
+                $(`.${page_index}`).addClass('hide');
             }
         }
         $('#firstpage').on('click', function(){set_page(1);});

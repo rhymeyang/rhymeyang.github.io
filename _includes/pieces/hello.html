@@ -1,7 +1,7 @@
 <!-- Include Data Base  -->
 {% include dbase/dbase %}
 
-{% assign allpost = site.categories.general | concat: site.categories.general  %}
+{% assign allpost = site.categories.general | concat: site.categories.docker_col  %}
 
 {% for post in  allpost %}
   {% capture post_count %} {{ post_count | plus: 1 }} {% endcapture %}

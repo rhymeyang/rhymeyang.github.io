@@ -35,7 +35,7 @@ website:
         home: Home
     footer:
       message: Simplicity is fashionable.
-
+  paginate: 10
 
 homepage:
   itemnum: 5

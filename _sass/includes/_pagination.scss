@@ -1,0 +1,42 @@
+nav.pagination{
+    background-color: transparent;
+    width: 100%;
+    align-content: center;
+  ul.pagination{
+    padding-left: 30%;
+    width:80%;
+    float: left;
+    li.page-item{
+        list-style: none;
+        a{
+            font-size: 1.5rem;
+            color: $color-links;
+        }        
+    }
+  }
+  ul.page{
+    float: left;
+    width:20%;
+    li{    
+        list-style: none;
+        a{
+            font-size: 1.5rem;
+            color: $color;
+            text-decoration: none;
+        }
+        
+  }
+  }
+  
+}
+
+.postlist{
+    div.content{
+        div.wrap{
+            display: none;
+        }
+        div.wrap.show{
+            display: inherit;
+        }
+    }
+}

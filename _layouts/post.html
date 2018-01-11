@@ -39,12 +39,11 @@ layout: default
     
   </div>
 
-<!--   <div class="col-sm-6 post-recent">
-  {% if page.previous %}
-    <p>prev: <a href="{{ page.previous.url | prepend: site.baseurl }}">{{ page.previous.title }}</a></p>
-  {% endif %}
-  {% if page.next %}
-    <p>next: <a href="{{ page.next.url | prepend: site.baseurl }}">{{ page.next.title }}</a></p>
-  {% endif %}
-</div> -->
+
+<ul class="pager">
+  <li><a href="{{ page.previous.url | prepend: site.baseurl }}">{{ page.previous.title }}</a></li>
+  <li><a href="{{ page.next.url | prepend: site.baseurl }}">{{ page.next.title }}</a></li>
+</ul>
+
+ 
 </article>

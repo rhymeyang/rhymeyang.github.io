@@ -48,7 +48,7 @@ markdown: kramdown
 # permalink: pretty
 
 
-
+# paginate: 5
 
 plugins_dir:
   - jekyll-feed

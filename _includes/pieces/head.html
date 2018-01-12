@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{% if page.title %}{{page.title}} | {{ dbase.website.title }} {% else %} {{ dbase.website.title }} | {{ dbase.website.description }} {% endif %}</title>
+  <title>{% if page.title %}{{page.title}} | {{ dbase.website.title }} {% else %} {{ dbase.website.title }} {% endif %}</title>
   <meta name=description content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ dbase.website.description }}{% endif %}">
   <meta name="robots" content="index, follow">
   <meta name=viewport content="width=device-width, initial-scale=1">
@@ -52,7 +52,7 @@
     <!-- Bootstrap 3.3.6 - Offline  -->
     <link rel="stylesheet" href="{{ '/assets/vendor-off/bootstrap/css/bootstrap.min.css' | prepend: site.baseurl | prepend: site.url }}">
     <!-- Font Awesome 5.03 - Offline -->    
-    <script defer src="{{ '/assets/vendor-off/font-awesome/svg-with-js/js/fontawesome-all.min.js' | prepend: site.baseurl | prepend: site.url }}"></script>
+    <script defer src="{{ '/assets/vendor-off/font-awesome/web-fonts-with-css/css/fontawesome-all.min.css' | prepend: site.baseurl | prepend: site.url }}"></script>
     <link rel="stylesheet" href="{{ '/assets/vendor-off/fonts/space-mono/space-mono.min.css' | prepend: site.baseurl | prepend: site.url }}">
     <link rel="stylesheet" href="{{ '/assets/vendor-off/fonts/gloria-hallelujah/gloria-hallelujah.min.css' | prepend: site.baseurl | prepend: site.url }}">
 {% else %}
@@ -63,7 +63,8 @@
 
     <!-- Fonts - Online -->
     <!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-    <script defer src="https://use.fontawesome.com/releases/v5.0.3/js/all.js"></script>
+    
+    <link href="https://use.fontawesome.com/releases/v5.0.3/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,600i,700,700i,800,800i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">

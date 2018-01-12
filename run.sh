@@ -12,7 +12,7 @@ function _rm_site_dir(){
     cd ${workDir}
 
     if [ -d ${siteDir} ]; then
-        rm -rf '${siteDir}'
+        rm -rf "${siteDir}"
     fi
     git worktree prune
 }

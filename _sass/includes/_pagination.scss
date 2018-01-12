@@ -6,7 +6,6 @@ nav.pagination{
     @media (max-width: 500px) {
       padding-left: 2%;
       // clear:both;
-      float: left;
       width:auto;
     }
     padding-left: 30%;
@@ -24,9 +23,9 @@ nav.pagination{
     @media (max-width: 500px) {
       // clear:both;
       float: right;
-      width:auto;
-      align-content: center;
+      width:auto;      
       li{
+        pading-top: 5px;
         a{
             font-size: 1.2rem;
         }

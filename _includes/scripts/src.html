@@ -3,10 +3,12 @@
 <!-- #### VENDOR OFFLINE #### -->
   <script src="{{ '/assets/vendor-off/jquery/js/jquery.min.js' | prepend: site.baseurl | prepend: site.url }}"></script>
   <script src="{{ '/assets/vendor-off/bootstrap/js/bootstrap.min.js' | prepend: site.baseurl | prepend: site.url }}"></script>
+  <script defer src="{{ '/assets/vendor-off/font-awesome/svg-with-js/js/fontawesome-all.min.js' | prepend: site.baseurl | prepend: site.url }}"></script>
 {% else %}
   <!-- #### VENDOR ONLINE #### -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.3/js/all.js"></script>
 {% endif %}
 
 <script src="{{ '/assets/javascripts/jekyll-spotify-plugin.min.js' | prepend: site.baseurl | prepend: site.url }}"></script>

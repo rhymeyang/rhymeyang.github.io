@@ -57,11 +57,13 @@ Docker 已经将 Registry 开源了，同时在 Docker Hub 上也有官方的镜
 
 指定本地路径（如 /home/user/registry-conf ）下的配置文件
 
-    sudo docker run -d -p 5000:5000 -v /home/user/registry-conf:/registry-conf -e DOCKER_REGISTRY_CONFIG=/registry-conf/config.yml registry
+{% highlight shell %}
+sudo docker run -d -p 5000:5000 -v /home/user/registry-conf:/registry-conf -e DOCKER_REGISTRY_CONFIG=/registry-conf/config.yml registry
 
-    docker run -d -p 5000:5000 -v /media/backup/dockerrepo:/var/lib/registry registry
+docker run -d -p 5000:5000 -v /media/backup/dockerrepo:/var/lib/registry registry
 
-    docker run -d -v /disk2/dockrepo:/var/lib/registry -p 5000:5000 registry
+docker run -d -v /disk2/dockrepo:/var/lib/registry -p 5000:5000 registry
+{% endhighlight %}
 
 默认情况下，仓库会被创建在容器的 /var/lib/registry（v1 中是/tmp/registry）下。可以通过 `-v` 参数来将镜像文件存放在本地的指定路径。 例如下面的例子将上传的镜像放到 /opt/data/registry 目录。    
 

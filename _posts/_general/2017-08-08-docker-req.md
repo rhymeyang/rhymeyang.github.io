@@ -130,3 +130,10 @@ docker attach my-web
 + 先按，ctrl+p
 + 再按，ctrl+q
 
+## add user to docker group
+
+{% highlight shell %}
+sudo groupadd docker
+
+sudo gpasswd -a ${USER} docker
+{% endhighlight %}

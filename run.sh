@@ -28,7 +28,7 @@ function __add_site_dir(){
     git worktree add  ${siteDir} ${branchSite}
 
     cd ${siteDir}
-    git pull origin ${branchSite}
+    git pull ${remRepo} ${branchSite}
 }
 
 function __clean_site_dir(){
@@ -86,15 +86,15 @@ function _deploy_site(){
   
   if [[ ${siteSave}=='no' ]]; then
       git commit --amend -m "$commit - $(date)"
-      git push -f -u origin ${branchSite}
+      msg_warning "will run git push -f -u ${remRepo} ${branchSite}"
+      git push -f -u ${remRepo} ${branchSite}
   else
       git commit -m "$commit - $(date)"
-      git push origin -u ${branchSite}
+      git push ${remRepo} -u ${branchSite}
   fi
 
   msg_finish "Done!"
 }
-
 
 
 # Menu

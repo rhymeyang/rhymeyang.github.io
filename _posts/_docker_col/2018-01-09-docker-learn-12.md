@@ -35,9 +35,9 @@ docker pull httpd:2.2
 
 sequence 
 
-+ docker run -it --network=host --name='hostbusy1' busybox 
-+ docker run -it --name='d0busy1' busybox
-+ docker run -it --name='d0httpd1' httpd:2.2
++ `docker run -it --network=host --name='hostbusy1' busybox`
++ `docker run -it --name='d0busy1' busybox`
++ `docker run -it --name='d0httpd1' httpd:2.2`
 
 ## none 和 host 网络的适用场景
 
